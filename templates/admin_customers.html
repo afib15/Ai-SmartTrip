@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers - AI SmartTrip Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            padding: 25px 18px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .label {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .nav {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            color: #d1d5db;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .nav:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout {
+            background: #dc2626;
+            margin-top: 30px;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 35px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .search-box form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f4f6;
+            text-align: left;
+            padding: 14px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .view {
+            background: #2563eb;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
+        @media(max-width:700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .search-box form {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="sidebar">
+
+    <div class="logo">
+        ✈ AI SmartTrip
+    </div>
+
+    <div class="label">
+        ADMIN PANEL
+    </div>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="nav">
+        🏠 Dashboard
+    </a>
+
+    <a href="{{ url_for('admin_customers') }}" class="nav">
+        👥 Customers
+    </a>
+
+    <a href="{{ url_for('admin_requirements') }}" class="nav">
+        📋 Requirements
+    </a>
+
+    <a href="{{ url_for('admin_search_history') }}" class="nav">
+        🔎 Search History
+    </a>
+
+    <a href="{{ url_for('dashboard') }}" class="nav">
+        ↩ Back to Website
+    </a>
+
+    <a href="{{ url_for('logout') }}" class="nav logout">
+        🚪 Logout
+    </a>
+
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+
+        <h1>Customer Management</h1>
+
+        <p>
+            View and manage all registered AI SmartTrip customers.
+        </p>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <form method="GET"
+              action="{{ url_for('admin_customers') }}">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ search }}"
+                placeholder="Search customer by name or email..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="table-card">
+
+        {% if customers %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Registered</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for customer in customers %}
+
+                <tr>
+
+                    <td>
+                        #{{ customer.id }}
+                    </td>
+
+                    <td>
+                        {{ customer.name }}
+                    </td>
+
+                    <td>
+                        {{ customer.email }}
+                    </td>
+
+                    <td>
+                        {{ customer.created_at.strftime('%d %b %Y') if customer.created_at else 'N/A' }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            class="view"
+                            href="{{ url_for(
+                                'admin_customer_detail',
+                                user_id=customer.id
+                            ) }}"
+                        >
+                            View Details
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            No customers found.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

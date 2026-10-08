@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customize Package | AI SmartTrip</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+body{background:#07111f;color:#f8fafc;font-family:Inter,Arial,sans-serif}
+.navbar{border-bottom:1px solid rgba(255,255,255,.08);background:#07111f}
+.brand{color:white;font-size:23px;font-weight:800;text-decoration:none}
+.brand span{color:#34d399}
+.main{padding:55px 20px}
+.card-dark{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:28px}
+label{color:#cbd5e1;font-weight:700;margin-bottom:8px}
+.form-control,.form-select{background:#0d1b2c;color:#f8fafc;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px}
+.form-control:focus,.form-select:focus{background:#0d1b2c;color:white;border-color:#34d399;box-shadow:none}
+.form-select option{background:#0d1b2c;color:white}
+.form-check{background:rgba(255,255,255,.035);padding:14px 15px 14px 40px;border-radius:12px;margin-bottom:10px}
+.price-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:18px;padding:25px}
+.price{font-size:clamp(28px,4vw,40px);font-weight:850;color:#34d399;overflow-wrap:anywhere}
+.btn-main{background:#34d399;border:none;color:#04130d;font-weight:800;border-radius:12px;padding:13px 20px}
+.btn-main:hover{background:#6ee7b7;color:#04130d}
+.muted{color:#94a3b8}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<div class="container py-3 d-flex justify-content-between align-items-center">
+<a href="{{ url_for('dashboard') }}" class="brand">AI <span>SmartTrip</span></a>
+<a href="{{ url_for('package_details', package_id=package.id) }}" class="btn btn-outline-light">Back</a>
+</div>
+</nav>
+
+<div class="main">
+<div class="container">
+<div class="mb-4">
+<h1>Customize {{ package.name }}</h1>
+<p class="muted">Modify hotel, transportation, food and activities according to your needs.</p>
+</div>
+
+<form method="POST">
+<div class="row g-4">
+<div class="col-lg-8">
+<div class="card-dark mb-4">
+<h4 class="mb-4"><i class="bi bi-people" style="color:#34d399"></i> Travellers</h4>
+<div class="row g-3">
+<div class="col-md-6">
+<label for="adults">Adults</label>
+<input id="adults" type="number" name="adults" class="form-control" min="1" max="50" value="{{ adults|default(2) }}" required>
+</div>
+<div class="col-md-6">
+<label for="children">Children</label>
+<input id="children" type="number" name="children" class="form-control" min="0" max="50" value="{{ children|default(0) }}">
+</div>
+</div>
+</div>
+
+<div class="card-dark mb-4">
+<h4 class="mb-4"><i class="bi bi-building" style="color:#34d399"></i> Hotel Upgrade</h4>
+<label for="hotel">Hotel Category</label>
+<select id="hotel" name="hotel" class="form-select">
+<option value="3-Star" {% if hotel|default('3-Star') == '3-Star' %}selected{% endif %}>3-Star — Included</option>
+<option value="4-Star" {% if hotel|default('3-Star') == '4-Star' %}selected{% endif %}>4-Star — +₹3,000</option>
+<option value="5-Star" {% if hotel|default('3-Star') == '5-Star' %}selected{% endif %}>5-Star — +₹7,000</option>
+</select>
+</div>
+
+<div class="card-dark mb-4">
+<h4 class="mb-4"><i class="bi bi-car-front" style="color:#34d399"></i> Transportation</h4>
+<label for="transport">Transport Type</label>
+<select id="transport" name="transport" class="form-select">
+<option value="Shared" {% if transport|default('Shared') == 'Shared' %}selected{% endif %}>Shared — Included</option>
+<option value="Private" {% if transport|default('Shared') == 'Private' %}selected{% endif %}>Private Cab — +₹2,500</option>
+<option value="Premium" {% if transport|default('Shared') == 'Premium' %}selected{% endif %}>Premium Vehicle — +₹5,000</option>
+</select>
+</div>
+
+<div class="card-dark mb-4">
+<h4 class="mb-4"><i class="bi bi-cup-hot" style="color:#34d399"></i> Food Plan</h4>
+<label for="food">Food Preference</label>
+<select id="food" name="food" class="form-select">
+<option value="Breakfast" {% if food|default('Breakfast') == 'Breakfast' %}selected{% endif %}>Breakfast — Included</option>
+<option value="Half Board" {% if food|default('Breakfast') == 'Half Board' %}selected{% endif %}>Half Board — +₹2,500</option>
+<option value="Full Board" {% if food|default('Breakfast') == 'Full Board' %}selected{% endif %}>Full Board — +₹5,000</option>
+</select>
+</div>
+
+<div class="card-dark">
+<h4 class="mb-4"><i class="bi bi-stars" style="color:#34d399"></i> Add Activities</h4>
+{% set selected_activities = activities|default([]) %}
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="activities" value="Adventure" id="a1" {% if 'Adventure' in selected_activities %}checked{% endif %}>
+<label class="form-check-label" for="a1">Adventure Activity +₹1,000</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="activities" value="Sightseeing" id="a2" {% if 'Sightseeing' in selected_activities %}checked{% endif %}>
+<label class="form-check-label" for="a2">Premium Sightseeing +₹1,000</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="activities" value="Cultural" id="a3" {% if 'Cultural' in selected_activities %}checked{% endif %}>
+<label class="form-check-label" for="a3">Cultural Experience +₹1,000</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="activities" value="Photography" id="a4" {% if 'Photography' in selected_activities %}checked{% endif %}>
+<label class="form-check-label" for="a4">Professional Photography +₹1,000</label>
+</div>
+</div>
+</div>
+
+<div class="col-lg-4">
+<div class="card-dark sticky-lg-top" style="top:20px">
+<h4>Package Summary</h4>
+<p class="muted">{{ package.name }}</p>
+<hr style="border-color:rgba(255,255,255,.1)">
+<div class="d-flex justify-content-between mb-3">
+<span class="muted">Base Price</span>
+<strong>₹{{ "{:,.0f}".format(package.price) }}</strong>
+</div>
+<div class="price-box">
+<div class="muted">Estimated Total</div>
+<div class="price">₹{{ "{:,.0f}".format(estimated_price|default(package.price)) }}</div>
+<div class="muted">Estimated package price</div>
+</div>
+<button type="submit" class="btn-main w-100 mt-4">
+<i class="bi bi-calculator"></i> Calculate &amp; Customize
+</button>
+<a href="{{ url_for('new_requirement', package_id=package.id) }}" class="btn btn-outline-light w-100 mt-3">
+<i class="bi bi-send"></i> Send Requirement
+</a>
+<p class="muted small mt-3 mb-0">Final price and availability will be confirmed after your requirement is reviewed.</p>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+</body>
+</html>

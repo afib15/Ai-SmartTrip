@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard - AI SmartTrip</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4faf8,
+                    #eef7f5
+                );
+            color: #173d49;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .smart-nav {
+            background: rgba(255,255,255,.97);
+            border-bottom: 1px solid #e3eee9;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-inner {
+            width: min(1200px, 94%);
+            min-height: 68px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+        .brand {
+            text-decoration: none;
+            color: #173d49;
+            font-size: 21px;
+            font-weight: 900;
+            white-space: nowrap;
+            letter-spacing: -.4px;
+        }
+
+        .brand span {
+            color: #10a879;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #526d73;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition:
+                color .2s ease,
+                transform .2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #10a879;
+            transform: translateY(-1px);
+        }
+
+        .nav-links .logout-link {
+            color: #d95353;
+        }
+
+        /* ADMIN LINK */
+
+        .nav-links .admin-link {
+            color: #8b5cf6;
+            font-weight: 800;
+        }
+
+        .nav-links .admin-link:hover {
+            color: #6d28d9;
+        }
+
+        /* =====================================================
+           MAIN PAGE
+        ===================================================== */
+
+        .dashboard-page {
+            width: min(1200px, 94%);
+            margin: auto;
+
+            padding:
+                22px
+                0
+                45px;
+        }
+
+        /* =====================================================
+           TRAVEL HERO
+        ===================================================== */
+
+        .travel-hero {
+            min-height: 285px;
+
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            margin-bottom: 20px;
+
+            background-image:
+
+                linear-gradient(
+                    90deg,
+                    rgba(7,38,50,.91) 0%,
+                    rgba(9,67,66,.77) 48%,
+                    rgba(8,76,70,.40) 100%
+                ),
+
+                url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=85");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            padding: 48px;
+            max-width: 760px;
+            color: white;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 7px;
+
+            padding:
+                8px
+                13px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(255,255,255,.14);
+
+            border:
+                1px solid
+                rgba(255,255,255,.20);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 17px;
+        }
+
+        .hero-content h1 {
+            margin: 0 0 13px;
+
+            font-size: 43px;
+            line-height: 1.1;
+
+            letter-spacing: -1.2px;
+        }
+
+        .hero-content h1 span {
+            color: #68e1b4;
+        }
+
+        .hero-content p {
+            margin: 0;
+
+            max-width: 690px;
+
+            color:
+                rgba(255,255,255,.87);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+        .hero-mini-info {
+            margin-top: 22px;
+
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+        .hero-mini-info span {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 6px;
+
+            padding:
+                8px
+                12px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(255,255,255,.11);
+
+            border:
+                1px solid
+                rgba(255,255,255,.16);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: white;
+
+            border:
+                1px solid
+                #e2eee9;
+
+            border-radius: 18px;
+
+            padding: 18px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(28,75,70,.05);
+        }
+
+        .stat-icon {
+            width: 47px;
+            height: 47px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                #e8f8f2;
+
+            color: #10a879;
+
+            font-size: 20px;
+
+            flex-shrink: 0;
+        }
+
+        .stat-label {
+            color: #789095;
+            font-size: 11px;
+            font-weight: 700;
+
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            color: #173d49;
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+        /* =====================================================
+           MAIN GRID
+        ===================================================== */
+
+        .main-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.45fr
+                .85fr;
+
+            gap: 18px;
+        }
+
+        .dashboard-card {
+            background: white;
+
+            border:
+                1px solid
+                #e2eee9;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(28,75,70,.05);
+        }
+
+        .card-title {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-title h2 {
+            margin: 0;
+
+            font-size: 17px;
+            color: #173d49;
+        }
+
+        .card-title h2 i {
+            color: #10a879;
+            margin-right: 5px;
+        }
+
+        .view-link {
+            text-decoration: none;
+
+            color: #10a879;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TRIP ROW
+        ===================================================== */
+
+        .trip-row {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            padding:
+                14px
+                0;
+
+            border-bottom:
+                1px solid
+                #edf3f1;
+        }
+
+        .trip-row:last-child {
+            border-bottom: none;
+        }
+
+        .trip-info h3 {
+            margin: 0 0 6px;
+
+            font-size: 14px;
+            color: #173d49;
+        }
+
+        .trip-info p {
+            margin: 0 0 9px;
+
+            color: #819397;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .trip-button {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 5px;
+
+            text-decoration: none;
+
+            color: #10a879;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .trip-budget {
+            color: #12966b;
+
+            font-size: 17px;
+            font-weight: 900;
+
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .action-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 10px;
+        }
+
+        .action {
+            min-height: 82px;
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                #e0eee9;
+
+            background:
+                #fbfefd;
+
+            text-decoration: none;
+
+            color: #365961;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                border-color .2s ease;
+        }
+
+        .action i {
+            color: #10a879;
+            font-size: 20px;
+        }
+
+        .action span {
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .action:hover {
+            transform: translateY(-2px);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f8f2,
+                    #def4ec
+                );
+
+            border-color: #b9dfd1;
+        }
+
+        /* =====================================================
+           INFORMATION BAR
+        ===================================================== */
+
+        .dashboard-note {
+            margin-top: 15px;
+
+            padding:
+                10px
+                14px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(16,168,121,.07);
+
+            border:
+                1px solid
+                rgba(16,168,121,.12);
+
+            color: #608078;
+
+            font-size: 11px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+        }
+
+        .dashboard-note i {
+            color: #10a879;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media(max-width: 900px) {
+
+            .nav-inner {
+                padding:
+                    10px
+                    0;
+
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                justify-content: flex-start;
+                gap: 12px;
+            }
+
+            .travel-hero {
+                min-height: 300px;
+            }
+
+            .hero-content {
+                padding: 35px;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width: 650px) {
+
+            .dashboard-page {
+                width: 92%;
+                padding-top: 15px;
+            }
+
+            .nav-inner {
+                width: 92%;
+            }
+
+            .brand {
+                font-size: 19px;
+            }
+
+            .nav-links {
+                gap: 9px;
+                line-height: 1.4;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .travel-hero {
+                min-height: 340px;
+
+                border-radius: 22px;
+
+                background-position:
+                    center;
+            }
+
+            .hero-content {
+                padding:
+                    28px
+                    24px;
+            }
+
+            .hero-content h1 {
+                font-size: 31px;
+                letter-spacing: -.5px;
+            }
+
+            .hero-content p {
+                font-size: 13px;
+            }
+
+            .hero-mini-info {
+                flex-wrap: wrap;
+                gap: 7px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-icon {
+                width: 42px;
+                height: 42px;
+            }
+
+            .dashboard-card {
+                padding: 16px;
+                border-radius: 17px;
+            }
+
+            .trip-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .trip-info p {
+                white-space: normal;
+                max-width: 100%;
+            }
+
+            .trip-budget {
+                align-self: flex-end;
+            }
+
+            .action {
+                min-height: 70px;
+            }
+        }
+
+        /* =====================================================
+           VERY SMALL MOBILE
+        ===================================================== */
+
+        @media(max-width: 400px) {
+
+            .nav-links {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, auto);
+
+                justify-content: start;
+            }
+
+            .hero-content h1 {
+                font-size: 28px;
+            }
+
+            .action-grid {
+                grid-template-columns:
+                    1fr
+                    1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+
+<header class="smart-nav">
+
+    <div class="nav-inner">
+
+        <!-- BRAND -->
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="brand"
+        >
+            ✈️ AI <span>SmartTrip</span>
+        </a>
+
+
+        <!-- NAVIGATION LINKS -->
+
+        <nav class="nav-links">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                href="{{ url_for('packages') }}"
+            >
+                Packages
+            </a>
+
+
+            <a
+                href="{{ url_for('create_trip') }}"
+            >
+                AI Planner
+            </a>
+
+
+            <a
+                href="{{ url_for('my_requirements') }}"
+            >
+                Requirements
+            </a>
+
+
+            <a
+                href="{{ url_for('favourites') }}"
+            >
+                Favourites
+            </a>
+
+
+            <!-- CONTACT -->
+
+            <a
+                href="{{ url_for('contact') }}"
+            >
+                Contact
+            </a>
+
+
+            <!-- ABOUT -->
+
+            <a
+                href="{{ url_for('about') }}"
+            >
+                About Us
+            </a>
+
+
+            <!-- =================================================
+                 ADMIN
+                 
+                 IMPORTANT:
+                 Admin link will ONLY appear when the currently
+                 logged-in email matches ADMIN_EMAIL.
+            ================================================== -->
+
+            {% if is_admin %}
+
+                <a
+                    href="{{ url_for('admin_dashboard') }}"
+                    class="admin-link"
+                >
+                    🛡️ Admin
+                </a>
+
+            {% endif %}
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-link"
+            >
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN DASHBOARD
+========================================================= -->
+
+<main class="dashboard-page">
+
+
+    <!-- =====================================================
+         TRAVEL HERO
+    ====================================================== -->
+
+    <section class="travel-hero">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+
+                ✨
+
+                Smart Travel Dashboard
+
+            </div>
+
+
+            <h1>
+
+                Welcome back,
+
+                <span>{{ user_name }}</span>
+
+                👋
+
+            </h1>
+
+
+            <p>
+
+                Plan smarter journeys, discover amazing
+                destinations, create AI-powered itineraries
+                and manage your complete travel experience
+                from one place.
+
+            </p>
+
+
+            <div class="hero-mini-info">
+
+                <span>
+
+                    <i class="bi bi-stars"></i>
+
+                    AI Powered
+
+                </span>
+
+
+                <span>
+
+                    <i class="bi bi-globe2"></i>
+
+                    Smart Travel
+
+                </span>
+
+
+                <span>
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Secure
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <section class="stats-grid">
+
+
+        <!-- MY TRIPS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-airplane"></i>
+
+            </div>
+
+
+            <div class="stat-details">
+
+                <div class="stat-label">
+
+                    My Trips
+
+                </div>
+
+
+                <div class="stat-value">
+
+                    {{ total_trips }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PLANNED BUDGET -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-wallet2"></i>
+
+            </div>
+
+
+            <div class="stat-details">
+
+                <div class="stat-label">
+
+                    Planned Budget
+
+                </div>
+
+
+                <div class="stat-value">
+
+                    ₹{{ "{:,.0f}".format(total_budget) }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PLATFORM -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-globe2"></i>
+
+            </div>
+
+
+            <div class="stat-details">
+
+                <div class="stat-label">
+
+                    Travel Platform
+
+                </div>
+
+
+                <div class="stat-value">
+
+                    AI SmartTrip
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="main-grid">
+
+
+        <!-- =================================================
+             RECENT TRIPS
+        ================================================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-title">
+
+                <h2>
+
+                    <i class="bi bi-briefcase"></i>
+
+                    Recent Trips
+
+                </h2>
+
+
+                <a
+                    href="{{ url_for('create_trip') }}"
+                    class="view-link"
+                >
+
+                    + New Trip
+
+                </a>
+
+            </div>
+
+
+            {% if trips %}
+
+                {% for trip in trips[:5] %}
+
+                    <div class="trip-row">
+
+                        <div class="trip-info">
+
+                            <h3>
+
+                                📍 {{ trip.destination }}
+
+                            </h3>
+
+
+                            <p>
+
+                                {{ trip.duration }}
+                                days
+
+                                •
+
+                                {{ trip.travellers }}
+                                traveller(s)
+
+                                •
+
+                                {{ trip.interests }}
+
+                            </p>
+
+
+                            <a
+                                href="{{ url_for('trip_details', trip_id=trip.id) }}"
+                                class="trip-button"
+                            >
+
+                                <i class="bi bi-eye"></i>
+
+                                View Trip
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="trip-budget">
+
+                            ₹{{ "{:,.0f}".format(trip.budget) }}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div
+                    style="
+                        padding:30px 10px;
+                        text-align:center;
+                        color:#819397;
+                    "
+                >
+
+                    <i
+                        class="bi bi-airplane"
+                        style="
+                            font-size:30px;
+                            color:#10a879;
+                        "
+                    ></i>
+
+                    <p>
+
+                        You haven't created any trips yet.
+
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="view-link"
+                    >
+
+                        Create Your First Trip →
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <section class="dashboard-card">
+
+            <div class="card-title">
+
+                <h2>
+
+                    <i class="bi bi-grid"></i>
+
+                    Quick Actions
+
+                </h2>
+
+            </div>
+
+
+            <div class="action-grid">
+
+
+                <!-- AI PLANNER -->
+
+                <a
+                    href="{{ url_for('create_trip') }}"
+                    class="action"
+                >
+
+                    <i class="bi bi-stars"></i>
+
+                    <span>
+                        AI Trip Planner
+                    </span>
+
+                </a>
+
+
+                <!-- PACKAGES -->
+
+                <a
+                    href="{{ url_for('packages') }}"
+                    class="action"
+                >
+
+                    <i class="bi bi-map"></i>
+
+                    <span>
+                        Explore Packages
+                    </span>
+
+                </a>
+
+
+                <!-- REQUIREMENTS -->
+
+                <a
+                    href="{{ url_for('my_requirements') }}"
+                    class="action"
+                >
+
+                    <i class="bi bi-clipboard-check"></i>
+
+                    <span>
+                        My Requirements
+                    </span>
+
+                </a>
+
+
+                <!-- FAVOURITES -->
+
+                <a
+                    href="{{ url_for('favourites') }}"
+                    class="action"
+                >
+
+                    <i class="bi bi-heart"></i>
+
+                    <span>
+                        Favourites
+                    </span>
+
+                </a>
+
+
+                <!-- CUSTOM DESTINATION -->
+
+                <a
+                    href="{{ url_for('new_requirement') }}"
+                    class="action"
+                >
+
+                    <i class="bi bi-geo-alt"></i>
+
+                    <span>
+                        Custom Trip
+                    </span>
+
+                </a>
+
+
+                <!-- CONTACT -->
+
+                <a
+                    href="{{ url_for('contact') }}"
+                    class="action"
+                >
+
+                    <i class="bi bi-chat-dots"></i>
+
+                    <span>
+                        Contact Us
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATION BAR
+    ====================================================== -->
+
+    <div class="dashboard-note">
+
+        <i class="bi bi-lightbulb"></i>
+
+        <span>
+
+            Tip: Use the AI Trip Planner to create a
+            personalized itinerary based on your destination,
+            budget, duration and interests.
+
+        </span>
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

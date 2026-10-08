@@ -1,0 +1,3858 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ package.name }} | AI SmartTrip</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f 0%,
+                    #0a1726 45%,
+                    #071a19 100%
+                );
+
+            color: #eef6f5;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .smart-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(7, 17, 31, 0.94);
+
+            backdrop-filter: blur(16px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+        }
+
+        .nav-inner {
+            width: min(1200px, 92%);
+            margin: auto;
+
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+        .brand {
+            text-decoration: none;
+            color: white;
+
+            font-size: 21px;
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .brand span {
+            color: #27d3a2;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #b9c9d2;
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: #27d3a2;
+        }
+
+        .logout {
+            color: #ff7777 !important;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .page {
+            width: min(1180px, 92%);
+            margin: auto;
+
+            padding:
+                28px 0 70px;
+        }
+
+
+        /* =====================================================
+           BACK
+        ===================================================== */
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            color: #9fb2bf;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: #27d3a2;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            min-height: 390px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 28px;
+
+            border:
+                1px solid rgba(255,255,255,0.10);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #102a3e,
+                    #0b4035
+                );
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.25);
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            opacity: 0.42;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(3,13,24,0.96) 0%,
+                    rgba(3,13,24,0.78) 48%,
+                    rgba(3,13,24,0.20) 100%
+                );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 700px;
+
+            padding: 58px 55px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 8px 13px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(39,211,162,0.14);
+
+            border:
+                1px solid rgba(39,211,162,0.30);
+
+            color: #55e1bc;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            margin: 0 0 13px;
+
+            font-size: clamp(34px, 5vw, 52px);
+
+            line-height: 1.08;
+
+            color: white;
+        }
+
+        .hero-location {
+            color: #b7c8d1;
+
+            font-size: 17px;
+
+            margin-bottom: 17px;
+        }
+
+        .hero-description {
+            color: #c7d5dc;
+
+            line-height: 1.75;
+
+            font-size: 15px;
+
+            max-width: 650px;
+
+            margin: 0;
+        }
+
+
+        /* =====================================================
+           QUICK INFO
+        ===================================================== */
+
+        .quick-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 14px;
+
+            margin-top: -42px;
+
+            position: relative;
+
+            z-index: 5;
+
+            padding: 0 25px;
+        }
+
+        .quick-card {
+            background: rgba(12, 27, 42, 0.97);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 17px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.20);
+        }
+
+        .quick-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background:
+                rgba(39,211,162,0.12);
+
+            color: #35d7aa;
+
+            margin-bottom: 10px;
+        }
+
+        .quick-label {
+            color: #8095a3;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            margin-bottom: 5px;
+        }
+
+        .quick-value {
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           CONTENT GRID
+        ===================================================== */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.7fr)
+                minmax(290px, 0.7fr);
+
+            gap: 24px;
+
+            align-items: start;
+
+            margin-top: 28px;
+        }
+
+
+        /* =====================================================
+           COMMON CARD
+        ===================================================== */
+
+        .card {
+            background:
+                rgba(12,27,42,0.96);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 22px;
+
+            padding: 27px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.15);
+
+            min-width: 0;
+        }
+
+        .section-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin: 0 0 21px;
+
+            font-size: 22px;
+
+            color: white;
+        }
+
+        .section-title i {
+            color: #27d3a2;
+        }
+
+        .muted {
+            color: #93a8b5;
+        }
+
+
+        /* =====================================================
+           HIGHLIGHTS
+        ===================================================== */
+
+        .highlight-list {
+            display: grid;
+
+            gap: 0;
+        }
+
+        .highlight-row {
+            padding: 16px 0;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+        }
+
+        .highlight-row:last-child {
+            border-bottom: none;
+        }
+
+        .highlight-label {
+            color: #8197a5;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            margin-bottom: 6px;
+        }
+
+        .highlight-value {
+            color: #e9f2f3;
+
+            font-size: 15px;
+
+            line-height: 1.65;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           ITINERARY
+        ===================================================== */
+
+        .itinerary-intro {
+            color: #9eb1bc;
+
+            line-height: 1.7;
+
+            margin-top: -8px;
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+        }
+
+        .day-card {
+            position: relative;
+
+            padding: 22px 22px 22px 72px;
+
+            margin-bottom: 17px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18,43,62,0.92),
+                    rgba(9,38,35,0.92)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+        }
+
+        .day-number {
+            position: absolute;
+
+            left: 18px;
+            top: 21px;
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #27d3a2;
+
+            color: #06151a;
+
+            font-size: 13px;
+
+            font-weight: 900;
+        }
+
+        .day-title {
+            margin: 0 0 8px;
+
+            font-size: 18px;
+
+            color: white;
+        }
+
+        .day-description {
+            color: #b9cbd2;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+            margin: 0 0 13px;
+        }
+
+        .day-meta {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+        .day-tag {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 7px 10px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(255,255,255,0.055);
+
+            color: #b9cbd2;
+
+            font-size: 11px;
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+        }
+
+        .day-tag i {
+            color: #27d3a2;
+        }
+
+
+        /* =====================================================
+           RIGHT PRICE CARD
+        ===================================================== */
+
+        .booking-card {
+            position: sticky;
+
+            top: 92px;
+        }
+
+        .price-label {
+            color: #91a5b1;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            margin-bottom: 6px;
+        }
+
+        .price {
+            font-size: 38px;
+
+            line-height: 1;
+
+            color: #36d9aa;
+
+            font-weight: 900;
+
+            margin-bottom: 7px;
+        }
+
+        .per-person {
+            color: #8398a5;
+
+            font-size: 12px;
+
+            margin-bottom: 22px;
+        }
+
+        .price-note {
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(39,211,162,0.07);
+
+            border:
+                1px solid rgba(39,211,162,0.12);
+
+            color: #9bb2bd;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 50px;
+
+            border-radius: 13px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s,
+                background 0.2s;
+
+            margin-top: 11px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #27d3a2;
+
+            color: #06151a;
+
+            box-shadow:
+                0 10px 25px rgba(39,211,162,0.15);
+        }
+
+        .btn-primary:hover {
+            background: #36dfb0;
+        }
+
+        .btn-secondary {
+            background:
+                rgba(255,255,255,0.045);
+
+            border:
+                1px solid rgba(255,255,255,0.10);
+
+            color: #e8f1f3;
+        }
+
+        .btn-secondary:hover {
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        /* =====================================================
+           INCLUDE / EXCLUDE
+        ===================================================== */
+
+        .check-list {
+            display: grid;
+
+            gap: 11px;
+
+            margin-top: 18px;
+        }
+
+        .check-item {
+            display: flex;
+
+            gap: 10px;
+
+            color: #b8cbd2;
+
+            font-size: 13px;
+
+            line-height: 1.55;
+        }
+
+        .check-item i {
+            margin-top: 2px;
+
+            flex-shrink: 0;
+        }
+
+        .included i {
+            color: #27d3a2;
+        }
+
+        .excluded i {
+            color: #ff7676;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .feature-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 23px;
+        }
+
+        .feature {
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+        }
+
+        .feature i {
+            color: #27d3a2;
+
+            font-size: 18px;
+
+            display: block;
+
+            margin-bottom: 8px;
+        }
+
+        .feature strong {
+            color: white;
+
+            font-size: 13px;
+
+            display: block;
+
+            margin-bottom: 4px;
+        }
+
+        .feature span {
+            color: #8298a5;
+
+            font-size: 11px;
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .nav-inner {
+                padding: 14px 0;
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .quick-info {
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                margin-top: 18px;
+
+                padding: 0;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-card {
+                position: static;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .page {
+                width: 94%;
+
+                padding-top: 18px;
+            }
+
+            .hero {
+                min-height: 430px;
+
+                border-radius: 20px;
+            }
+
+            .hero-content {
+                padding: 38px 25px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .quick-info {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .day-card {
+                padding:
+                    20px 18px 20px 62px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 450px) {
+
+            .quick-info {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                width: 100%;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero-content {
+                padding: 30px 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .day-number {
+                left: 14px;
+            }
+
+            .day-card {
+                padding-left: 60px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="smart-nav">
+
+    <div class="nav-inner">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="brand"
+        >
+            ✈️ AI <span>SmartTrip</span>
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('packages') }}">
+                Packages
+            </a>
+
+            <a href="{{ url_for('create_trip') }}">
+                AI Trip Planner
+            </a>
+
+            <a href="{{ url_for('my_requirements') }}">
+                Requirements
+            </a>
+
+            <a href="{{ url_for('favourites') }}">
+                Favourites
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <a
+        href="{{ url_for('packages') }}"
+        class="back-link"
+    >
+        <i class="bi bi-arrow-left"></i>
+        Back to Packages
+    </a>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+
+        {% if package.destination|lower == 'goa' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1600&q=85"
+                alt="Goa"
+            >
+
+        {% elif package.destination|lower == 'kashmir' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1600&q=85"
+                alt="Kashmir"
+            >
+
+        {% elif package.destination|lower == 'manali' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1600&q=85"
+                alt="Manali"
+            >
+
+        {% elif package.destination|lower == 'kerala' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1600&q=85"
+                alt="Kerala"
+            >
+
+        {% elif package.destination|lower == 'rajasthan' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1600&q=85"
+                alt="Rajasthan"
+            >
+
+        {% elif package.destination|lower == 'dubai' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=85"
+                alt="Dubai"
+            >
+
+        {% elif package.destination|lower == 'shimla' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=1600&q=85"
+                alt="Shimla"
+            >
+
+        {% elif package.destination|lower == 'ladakh' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?auto=format&fit=crop&w=1600&q=85"
+                alt="Ladakh"
+            >
+
+        {% elif package.destination|lower == 'andaman' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1600&q=85"
+                alt="Andaman"
+            >
+
+        {% elif package.destination|lower == 'sikkim' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1622308644420-b20142dc993c?auto=format&fit=crop&w=1600&q=85"
+                alt="Sikkim"
+            >
+
+        {% elif package.destination|lower == 'meghalaya' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1606298855672-3efb63017be8?auto=format&fit=crop&w=1600&q=85"
+                alt="Meghalaya"
+            >
+
+        {% elif package.destination|lower == 'varanasi' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1561361058-c24cecae35ca?auto=format&fit=crop&w=1600&q=85"
+                alt="Varanasi"
+            >
+
+        {% elif package.destination|lower == 'jim corbett' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1600&q=85"
+                alt="Jim Corbett"
+            >
+
+        {% elif package.destination|lower == 'bali' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=85"
+                alt="Bali"
+            >
+
+        {% elif package.destination|lower == 'thailand' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1600&q=85"
+                alt="Thailand"
+            >
+
+        {% elif package.destination|lower == 'singapore' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1600&q=85"
+                alt="Singapore"
+            >
+
+        {% elif package.destination|lower == 'vietnam' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1600&q=85"
+                alt="Vietnam"
+            >
+
+        {% elif package.destination|lower == 'maldives' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1600&q=85"
+                alt="Maldives"
+            >
+
+        {% elif package.destination|lower == 'malaysia' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1600&q=85"
+                alt="Malaysia"
+            >
+
+        {% elif package.destination|lower == 'nepal' %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1600&q=85"
+                alt="Nepal"
+            >
+
+        {% else %}
+
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=85"
+                alt="{{ package.destination }}"
+            >
+
+        {% endif %}
+
+
+        <div class="hero-overlay"></div>
+
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                <i class="bi bi-compass"></i>
+
+                {{ package.category }}
+            </div>
+
+
+            <h1>
+                {{ package.name }}
+            </h1>
+
+
+            <div class="hero-location">
+
+                <i class="bi bi-geo-alt-fill"></i>
+
+                {{ package.destination }}
+
+                &nbsp; • &nbsp;
+
+                {{ package.duration }} Days
+
+            </div>
+
+
+            <p class="hero-description">
+                {{ package.description }}
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         QUICK INFO
+    ====================================================== -->
+
+    <section class="quick-info">
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                <i class="bi bi-calendar3"></i>
+            </div>
+
+            <div class="quick-label">
+                Duration
+            </div>
+
+            <div class="quick-value">
+                {{ package.duration }} Days
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div class="quick-label">
+                Stay
+            </div>
+
+            <div class="quick-value">
+                {{ package.hotel }}
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                <i class="bi bi-car-front"></i>
+            </div>
+
+            <div class="quick-label">
+                Transport
+            </div>
+
+            <div class="quick-value">
+                {{ package.transport }}
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-icon">
+                <i class="bi bi-tag"></i>
+            </div>
+
+            <div class="quick-label">
+                Category
+            </div>
+
+            <div class="quick-value">
+                {{ package.category }}
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="content-grid">
+
+
+        <!-- =================================================
+             LEFT
+        ================================================== -->
+
+        <div>
+
+
+            <!-- PACKAGE HIGHLIGHTS -->
+
+            <section class="card">
+
+                <h2 class="section-title">
+                    <i class="bi bi-stars"></i>
+                    Package Highlights
+                </h2>
+
+
+                <div class="highlight-list">
+
+
+                    <div class="highlight-row">
+
+                        <div class="highlight-label">
+                            Destination
+                        </div>
+
+                        <div class="highlight-value">
+                            {{ package.destination }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="highlight-row">
+
+                        <div class="highlight-label">
+                            Duration
+                        </div>
+
+                        <div class="highlight-value">
+                            {{ package.duration }} Days
+                        </div>
+
+                    </div>
+
+
+                    <div class="highlight-row">
+
+                        <div class="highlight-label">
+                            Accommodation
+                        </div>
+
+                        <div class="highlight-value">
+                            {{ package.hotel }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="highlight-row">
+
+                        <div class="highlight-label">
+                            Transportation
+                        </div>
+
+                        <div class="highlight-value">
+                            {{ package.transport }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="highlight-row">
+
+                        <div class="highlight-label">
+                            Activities & Experiences
+                        </div>
+
+                        <div class="highlight-value">
+                            {{ package.activities }}
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="feature-grid">
+
+                    <div class="feature">
+                        <i class="bi bi-shield-check"></i>
+
+                        <strong>Flexible</strong>
+
+                        <span>
+                            Customizable travel options
+                        </span>
+                    </div>
+
+
+                    <div class="feature">
+                        <i class="bi bi-building-check"></i>
+
+                        <strong>Comfortable Stay</strong>
+
+                        <span>
+                            Selected accommodation
+                        </span>
+                    </div>
+
+
+                    <div class="feature">
+                        <i class="bi bi-map"></i>
+
+                        <strong>Planned Sightseeing</strong>
+
+                        <span>
+                            Important attractions included
+                        </span>
+                    </div>
+
+
+                    <div class="feature">
+                        <i class="bi bi-headset"></i>
+
+                        <strong>Travel Support</strong>
+
+                        <span>
+                            Requirement-based assistance
+                        </span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 DAY-WISE ITINERARY
+            ================================================== -->
+
+            <section class="card" style="margin-top:24px;">
+
+                <h2 class="section-title">
+                    <i class="bi bi-map"></i>
+                    Day-wise Travel Itinerary
+                </h2>
+
+                <p class="itinerary-intro">
+                    Know exactly where you will go, what you will
+                    explore and where you will stay during your trip.
+                </p>
+
+
+                <!-- GOA -->
+
+                {% if package.destination|lower == 'goa' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+
+                        <h3 class="day-title">
+                            Arrival & North Goa Beaches
+                        </h3>
+
+                        <p class="day-description">
+                            Arrive in Goa, transfer to the hotel and
+                            complete check-in. Relax at Calangute Beach,
+                            explore Baga Beach and Baga Market, followed
+                            by a beautiful sunset and dinner.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Calangute • Baga
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Goa Beach Resort
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+
+                        <h3 class="day-title">
+                            Forts, Beaches & North Goa
+                        </h3>
+
+                        <p class="day-description">
+                            After breakfast visit Fort Aguada,
+                            Candolim Beach, Sinquerim Beach, Chapora
+                            Fort and Vagator Beach. Evening at leisure.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Fort Aguada • Chapora
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Goa Beach Resort
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+
+                        <h3 class="day-title">
+                            South Goa & Panjim
+                        </h3>
+
+                        <p class="day-description">
+                            Explore Basilica of Bom Jesus, Se Cathedral,
+                            Dona Paula, Miramar Beach and Panjim.
+                            Evening free for shopping and local food.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Panjim • Dona Paula
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Goa Beach Resort
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+
+                        <h3 class="day-title">
+                            Breakfast & Departure
+                        </h3>
+
+                        <p class="day-description">
+                            Enjoy breakfast, complete hotel checkout
+                            and transfer to Goa airport or railway
+                            station for your onward journey.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- KASHMIR -->
+
+                {% elif package.destination|lower == 'kashmir' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+
+                        <h3 class="day-title">
+                            Srinagar Arrival & Dal Lake
+                        </h3>
+
+                        <p class="day-description">
+                            Arrival in Srinagar, hotel check-in and
+                            leisure time. Enjoy Dal Lake and a traditional
+                            Shikara ride during the evening.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Srinagar • Dal Lake
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Srinagar Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+
+                        <h3 class="day-title">
+                            Gulmarg Mountain Excursion
+                        </h3>
+
+                        <p class="day-description">
+                            Full-day trip to Gulmarg. Enjoy mountain
+                            views, meadows and optional gondola/adventure
+                            activities depending on season.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-mountains"></i>
+                                Gulmarg
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Srinagar Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+
+                        <h3 class="day-title">
+                            Pahalgam Valley
+                        </h3>
+
+                        <p class="day-description">
+                            Drive towards Pahalgam and explore the
+                            beautiful valley, riverside scenery and
+                            surrounding mountain landscapes.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Pahalgam
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Pahalgam / Srinagar
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+
+                        <h3 class="day-title">
+                            Mughal Gardens & Srinagar
+                        </h3>
+
+                        <p class="day-description">
+                            Visit Mughal Gardens, Nishat Bagh, Shalimar
+                            Bagh and local markets. Evening at leisure.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-flower1"></i>
+                                Mughal Gardens
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Srinagar Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+
+                        <h3 class="day-title">
+                            Local Experience & Leisure
+                        </h3>
+
+                        <p class="day-description">
+                            Enjoy a relaxed day exploring Srinagar,
+                            local handicrafts, food and scenic spots.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Local Market
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Srinagar Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+
+                        <h3 class="day-title">
+                            Breakfast & Departure
+                        </h3>
+
+                        <p class="day-description">
+                            Breakfast, checkout and transfer to Srinagar
+                            airport for departure.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- MANALI -->
+
+                {% elif package.destination|lower == 'manali' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+
+                        <h3 class="day-title">
+                            Arrival in Manali
+                        </h3>
+
+                        <p class="day-description">
+                            Hotel check-in followed by relaxed sightseeing
+                            around Mall Road and nearby local markets.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Mall Road
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Manali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+
+                        <h3 class="day-title">
+                            Solang Valley Adventure
+                        </h3>
+
+                        <p class="day-description">
+                            Visit Solang Valley for mountain scenery and
+                            optional adventure activities. Return to Manali
+                            by evening.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-mountains"></i>
+                                Solang Valley
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Manali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+
+                        <h3 class="day-title">
+                            Old Manali & Hadimba Temple
+                        </h3>
+
+                        <p class="day-description">
+                            Explore Hadimba Temple, Old Manali,
+                            Manu Temple and the famous café streets.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Old Manali
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Manali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+
+                        <h3 class="day-title">
+                            Atal Tunnel & Sissu
+                        </h3>
+
+                        <p class="day-description">
+                            Scenic drive towards Atal Tunnel and Sissu,
+                            enjoying Himalayan landscapes and mountain
+                            viewpoints.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-signpost"></i>
+                                Atal Tunnel • Sissu
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Manali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+
+                        <h3 class="day-title">
+                            Breakfast & Departure
+                        </h3>
+
+                        <p class="day-description">
+                            Breakfast, checkout and departure from Manali.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- KERALA -->
+
+                {% elif package.destination|lower == 'kerala' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+
+                        <h3 class="day-title">
+                            Kochi Arrival & Fort Kochi
+                        </h3>
+
+                        <p class="day-description">
+                            Arrival in Kochi, hotel check-in and exploration
+                            of Fort Kochi, Chinese fishing nets and local
+                            streets.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Kochi
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Kochi Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+
+                        <h3 class="day-title">
+                            Kochi to Munnar
+                        </h3>
+
+                        <p class="day-description">
+                            Drive through scenic Kerala landscapes towards
+                            Munnar. Visit tea plantations and viewpoints.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Munnar
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Munnar Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+
+                        <h3 class="day-title">
+                            Munnar Sightseeing
+                        </h3>
+
+                        <p class="day-description">
+                            Explore tea gardens, scenic viewpoints and
+                            waterfalls around Munnar.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Tea Gardens
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Munnar Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+
+                        <h3 class="day-title">
+                            Thekkady Wildlife Experience
+                        </h3>
+
+                        <p class="day-description">
+                            Travel to Thekkady and explore the surrounding
+                            nature, spice plantations and optional wildlife
+                            experiences.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Thekkady
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Thekkady Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+
+                        <h3 class="day-title">
+                            Alleppey Houseboat
+                        </h3>
+
+                        <p class="day-description">
+                            Transfer to Alleppey and enjoy Kerala's famous
+                            backwater experience aboard a traditional
+                            houseboat.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Alleppey
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-house"></i>
+                                Stay: Houseboat
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+
+                        <h3 class="day-title">
+                            Checkout & Departure
+                        </h3>
+
+                        <p class="day-description">
+                            Breakfast, checkout and transfer towards
+                            Kochi for onward journey.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- RAJASTHAN -->
+
+                {% elif package.destination|lower == 'rajasthan' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+
+                        <h3 class="day-title">
+                            Jaipur Arrival
+                        </h3>
+
+                        <p class="day-description">
+                            Hotel check-in and evening exploration of
+                            Jaipur's local markets and city atmosphere.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Jaipur
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Jaipur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+
+                        <h3 class="day-title">
+                            Jaipur Heritage Tour
+                        </h3>
+
+                        <p class="day-description">
+                            Visit Amber Fort, City Palace, Hawa Mahal
+                            and explore Jaipur's famous markets.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-bank"></i>
+                                Amber Fort • Hawa Mahal
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Jaipur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+
+                        <h3 class="day-title">
+                            Jaipur to Jodhpur
+                        </h3>
+
+                        <p class="day-description">
+                            Travel to Jodhpur and explore the Blue City
+                            and local markets.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Jodhpur
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Jodhpur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+
+                        <h3 class="day-title">
+                            Mehrangarh Fort & Blue City
+                        </h3>
+
+                        <p class="day-description">
+                            Explore Mehrangarh Fort, Jaswant Thada and
+                            the iconic blue streets of Jodhpur.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-bank"></i>
+                                Mehrangarh Fort
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Jodhpur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+
+                        <h3 class="day-title">
+                            Jodhpur to Udaipur
+                        </h3>
+
+                        <p class="day-description">
+                            Scenic transfer towards Udaipur followed by
+                            leisure time near Lake Pichola.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Lake Pichola
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Udaipur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+
+                        <h3 class="day-title">
+                            Udaipur Heritage & Lakes
+                        </h3>
+
+                        <p class="day-description">
+                            Visit City Palace, lakeside areas and local
+                            markets before enjoying an evening at leisure.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                City Palace
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Udaipur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">7</div>
+
+                        <h3 class="day-title">
+                            Breakfast & Departure
+                        </h3>
+
+                        <p class="day-description">
+                            Breakfast, checkout and departure from Udaipur.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- DUBAI -->
+
+                {% elif package.destination|lower == 'dubai' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+
+                        <h3 class="day-title">
+                            Dubai Arrival & Marina
+                        </h3>
+
+                        <p class="day-description">
+                            Airport transfer, hotel check-in and evening
+                            Dubai Marina experience.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-buildings"></i>
+                                Dubai Marina
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Dubai Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+
+                        <h3 class="day-title">
+                            Burj Khalifa & Downtown Dubai
+                        </h3>
+
+                        <p class="day-description">
+                            Visit Burj Khalifa, Dubai Mall and Downtown
+                            Dubai attractions.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Burj Khalifa • Dubai Mall
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Dubai Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+
+                        <h3 class="day-title">
+                            Desert Safari
+                        </h3>
+
+                        <p class="day-description">
+                            Enjoy a desert experience with dune views,
+                            cultural activities and evening entertainment.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-sun"></i>
+                                Desert Safari
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Dubai Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+
+                        <h3 class="day-title">
+                            Palm Jumeirah & Jumeirah
+                        </h3>
+
+                        <p class="day-description">
+                            Explore Palm Jumeirah, Jumeirah coastline,
+                            photo stops and leisure shopping.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Palm Jumeirah
+                            </span>
+
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Dubai Hotel
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+
+                        <h3 class="day-title">
+                            Shopping & Departure
+                        </h3>
+
+                        <p class="day-description">
+                            Breakfast, shopping and airport transfer
+                            according to departure time.
+                        </p>
+
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- SHIMLA -->
+
+                {% elif package.destination|lower == 'shimla' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Arrival & Shimla Mall Road</h3>
+                        <p class="day-description">
+                            Hotel check-in followed by Mall Road,
+                            Ridge and local market exploration.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Mall Road • Ridge
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Shimla Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Shimla Sightseeing</h3>
+                        <p class="day-description">
+                            Visit Jakhoo Temple, Christ Church and
+                            important city viewpoints.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Jakhoo • Christ Church
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Shimla Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Kufri Excursion</h3>
+                        <p class="day-description">
+                            Day excursion to Kufri and nearby Himalayan
+                            viewpoints with leisure time.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-mountains"></i>
+                                Kufri
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Shimla Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Breakfast & Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and departure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- LADAKH -->
+
+                {% elif package.destination|lower == 'ladakh' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Arrival in Leh</h3>
+                        <p class="day-description">
+                            Arrival in Leh, hotel check-in and complete
+                            rest for high-altitude acclimatization.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Leh
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Leh Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Leh Local Sightseeing</h3>
+                        <p class="day-description">
+                            Explore Leh Palace, Shanti Stupa and local
+                            markets while continuing acclimatization.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Leh Palace • Shanti Stupa
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Leh Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Nubra Valley</h3>
+                        <p class="day-description">
+                            Scenic road trip towards Nubra Valley through
+                            high mountain passes and desert landscapes.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-mountains"></i>
+                                Khardung La • Nubra
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Nubra Camp/Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Pangong Lake</h3>
+                        <p class="day-description">
+                            Continue towards the famous Pangong Lake and
+                            enjoy its changing mountain scenery.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Pangong Lake
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Pangong Camp
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Pangong to Leh</h3>
+                        <p class="day-description">
+                            Return towards Leh with scenic stops along
+                            the route.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-signpost"></i>
+                                Mountain Road Trip
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Leh Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+                        <h3 class="day-title">Monasteries & Local Experience</h3>
+                        <p class="day-description">
+                            Visit important monasteries and enjoy a relaxed
+                            final evening in Leh.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Monastery Tour
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Leh Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">7</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast and transfer for departure from Leh.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- ANDAMAN -->
+
+                {% elif package.destination|lower == 'andaman' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Port Blair Arrival</h3>
+                        <p class="day-description">
+                            Airport arrival, hotel check-in and local
+                            sightseeing around Port Blair.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Port Blair
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Port Blair Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Cellular Jail & Ross Island</h3>
+                        <p class="day-description">
+                            Explore the historic Cellular Jail and island
+                            attractions before returning to Port Blair.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-bank"></i>
+                                Cellular Jail
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Port Blair Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Havelock Island</h3>
+                        <p class="day-description">
+                            Transfer to Havelock Island and enjoy beach
+                            time at one of the island's famous beaches.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Havelock
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Havelock Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Island & Beach Experience</h3>
+                        <p class="day-description">
+                            Relax by the sea and enjoy optional water
+                            activities depending on weather and availability.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Beach Experience
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Havelock Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Return & Departure</h3>
+                        <p class="day-description">
+                            Return to Port Blair and transfer for departure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- SIKKIM -->
+
+                {% elif package.destination|lower == 'sikkim' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Gangtok Arrival</h3>
+                        <p class="day-description">
+                            Arrival in Gangtok, hotel check-in and evening
+                            exploration of MG Marg.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Gangtok
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Gangtok Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Gangtok Sightseeing</h3>
+                        <p class="day-description">
+                            Visit important viewpoints, monasteries and
+                            local attractions around Gangtok.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Gangtok
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Gangtok Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Tsomgo Lake Excursion</h3>
+                        <p class="day-description">
+                            Day trip towards Tsomgo Lake and surrounding
+                            Himalayan landscapes, subject to permits/weather.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Tsomgo Lake
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Gangtok Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Local Leisure</h3>
+                        <p class="day-description">
+                            Enjoy local food, shopping and relaxed
+                            sightseeing around Gangtok.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Local Market
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Gangtok Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and departure transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- MEGHALAYA -->
+
+                {% elif package.destination|lower == 'meghalaya' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Shillong Arrival</h3>
+                        <p class="day-description">
+                            Arrival in Shillong and relaxed city sightseeing.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Shillong
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Shillong Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Shillong & Waterfalls</h3>
+                        <p class="day-description">
+                            Explore Shillong viewpoints and nearby
+                            waterfalls and natural attractions.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Waterfalls
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Shillong Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Cherrapunji</h3>
+                        <p class="day-description">
+                            Drive to Cherrapunji and explore scenic valleys,
+                            waterfalls and viewpoints.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-cloud-rain"></i>
+                                Cherrapunji
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Cherrapunji Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Living Root Bridge Region</h3>
+                        <p class="day-description">
+                            Explore Meghalaya's natural landscapes and
+                            traditional living-root bridge region.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Root Bridge
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Cherrapunji Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Return to Shillong</h3>
+                        <p class="day-description">
+                            Return to Shillong with scenic stops and
+                            evening leisure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Shillong
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Shillong Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and departure transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- VARANASI -->
+
+                {% elif package.destination|lower == 'varanasi' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Arrival & Ganga Aarti</h3>
+                        <p class="day-description">
+                            Hotel check-in followed by evening visit to
+                            the ghats and Ganga Aarti experience.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Ganga Ghats
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Varanasi Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Varanasi Heritage Tour</h3>
+                        <p class="day-description">
+                            Explore temples, old city lanes and important
+                            ghats. Enjoy a morning or evening boat ride.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-bank"></i>
+                                Temples • Ghats
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Varanasi Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Breakfast & Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and departure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- JIM CORBETT -->
+
+                {% elif package.destination|lower == 'jim corbett' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Arrival & Resort</h3>
+                        <p class="day-description">
+                            Arrival at Jim Corbett, resort check-in and
+                            relaxed nature experience.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Corbett
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Jungle Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Wildlife Safari</h3>
+                        <p class="day-description">
+                            Early morning or afternoon safari depending
+                            on permit and zone availability. Evening leisure
+                            at the resort.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-binoculars"></i>
+                                Wildlife Safari
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Jungle Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Breakfast & Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and departure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- BALI -->
+
+                {% elif package.destination|lower == 'bali' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Bali Arrival</h3>
+                        <p class="day-description">
+                            Airport transfer, hotel check-in and relaxed
+                            evening at leisure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Bali
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Bali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Ubud & Cultural Bali</h3>
+                        <p class="day-description">
+                            Explore Ubud, rice terraces, temples and
+                            local cultural experiences.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-tree"></i>
+                                Ubud
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Bali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Water Temple & Scenic Bali</h3>
+                        <p class="day-description">
+                            Visit scenic temples, viewpoints and
+                            traditional Balinese landscapes.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Temple Tour
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Bali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Beach & Sunset</h3>
+                        <p class="day-description">
+                            Relax at Bali beaches and enjoy a beautiful
+                            sunset experience.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Beach
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Bali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Leisure & Shopping</h3>
+                        <p class="day-description">
+                            Free time for shopping, cafés and optional
+                            activities.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Shopping
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Bali Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and airport transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- THAILAND -->
+
+                {% elif package.destination|lower == 'thailand' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Thailand Arrival</h3>
+                        <p class="day-description">
+                            Airport transfer, hotel check-in and evening
+                            leisure.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Bangkok / Phuket
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Thailand Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">City Sightseeing</h3>
+                        <p class="day-description">
+                            Explore important city attractions, local
+                            markets and cultural landmarks.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                City Tour
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Thailand Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Island / Beach Experience</h3>
+                        <p class="day-description">
+                            Enjoy a day around Thailand's beaches and
+                            optional island activities.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Beach & Islands
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Thailand Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Leisure & Shopping</h3>
+                        <p class="day-description">
+                            Free time for shopping, food and optional
+                            local experiences.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Shopping
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Thailand Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Leisure Day</h3>
+                        <p class="day-description">
+                            Relaxed day for personal exploration and
+                            optional activities.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-stars"></i>
+                                Leisure
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Thailand Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and airport transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- SINGAPORE -->
+
+                {% elif package.destination|lower == 'singapore' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Singapore Arrival</h3>
+                        <p class="day-description">
+                            Airport transfer, hotel check-in and evening
+                            city exploration.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-buildings"></i>
+                                Singapore
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Singapore Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Marina Bay & City</h3>
+                        <p class="day-description">
+                            Explore Marina Bay, Gardens by the Bay and
+                            Singapore's modern city landmarks.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-buildings"></i>
+                                Marina Bay
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Singapore Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Sentosa Island</h3>
+                        <p class="day-description">
+                            Enjoy Sentosa attractions, beaches and
+                            optional theme-park experiences.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Sentosa
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Singapore Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Shopping & Departure</h3>
+                        <p class="day-description">
+                            Shopping and leisure followed by airport
+                            transfer according to departure schedule.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Shopping
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- VIETNAM -->
+
+                {% elif package.destination|lower == 'vietnam' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Vietnam Arrival</h3>
+                        <p class="day-description">
+                            Airport transfer, hotel check-in and local
+                            evening exploration.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Vietnam
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Vietnam Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Hanoi City Experience</h3>
+                        <p class="day-description">
+                            Explore Hanoi's historic areas, local food
+                            streets and cultural landmarks.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-camera"></i>
+                                Hanoi
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Hanoi Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Ha Long Bay</h3>
+                        <p class="day-description">
+                            Explore the famous limestone landscapes and
+                            scenic waters of Ha Long Bay.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Ha Long Bay
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-house"></i>
+                                Stay: Cruise / Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Local Markets & Culture</h3>
+                        <p class="day-description">
+                            Discover local markets, food and cultural
+                            experiences.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Local Market
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Vietnam Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">City Leisure</h3>
+                        <p class="day-description">
+                            Relaxed sightseeing, cafés and shopping.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-stars"></i>
+                                Leisure
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Vietnam Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and airport transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- MALDIVES -->
+
+                {% elif package.destination|lower == 'maldives' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Arrival & Resort Check-in</h3>
+                        <p class="day-description">
+                            Airport arrival, resort transfer and relaxed
+                            evening on the island.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Maldives Island
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Island Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Private Beach Experience</h3>
+                        <p class="day-description">
+                            Enjoy a relaxed beach day with optional
+                            resort activities and water experiences.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Private Beach
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Island Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Island Tour & Sunset</h3>
+                        <p class="day-description">
+                            Island exploration followed by a beautiful
+                            sunset experience.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-sunset"></i>
+                                Sunset Experience
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Island Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Leisure & Water Activities</h3>
+                        <p class="day-description">
+                            Free time for resort relaxation and optional
+                            water activities.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Water Activities
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Island Resort
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Breakfast & Departure</h3>
+                        <p class="day-description">
+                            Breakfast, resort checkout and transfer to
+                            the airport.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- MALAYSIA -->
+
+                {% elif package.destination|lower == 'malaysia' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Kuala Lumpur Arrival</h3>
+                        <p class="day-description">
+                            Airport transfer, hotel check-in and evening
+                            city exploration.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-buildings"></i>
+                                Kuala Lumpur
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Kuala Lumpur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">City & Petronas Towers</h3>
+                        <p class="day-description">
+                            Explore Petronas Towers, city landmarks and
+                            Kuala Lumpur's shopping areas.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-buildings"></i>
+                                Petronas Towers
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Kuala Lumpur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Batu Caves & Genting</h3>
+                        <p class="day-description">
+                            Visit Batu Caves followed by an excursion
+                            towards Genting Highlands.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-mountains"></i>
+                                Batu Caves • Genting
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Kuala Lumpur Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Shopping & Departure</h3>
+                        <p class="day-description">
+                            Shopping and leisure followed by airport
+                            transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Shopping
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- NEPAL -->
+
+                {% elif package.destination|lower == 'nepal' %}
+
+                    <div class="day-card">
+                        <div class="day-number">1</div>
+                        <h3 class="day-title">Kathmandu Arrival</h3>
+                        <p class="day-description">
+                            Arrival, hotel check-in and relaxed exploration
+                            around Kathmandu.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-geo-alt"></i>
+                                Kathmandu
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Kathmandu Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">2</div>
+                        <h3 class="day-title">Kathmandu Heritage Tour</h3>
+                        <p class="day-description">
+                            Explore major temples, heritage areas and
+                            local markets.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-bank"></i>
+                                Heritage Sites
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Kathmandu Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">3</div>
+                        <h3 class="day-title">Kathmandu to Pokhara</h3>
+                        <p class="day-description">
+                            Scenic road journey to Pokhara and evening
+                            beside Phewa Lake.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-water"></i>
+                                Phewa Lake
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Pokhara Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">4</div>
+                        <h3 class="day-title">Pokhara Mountain Experience</h3>
+                        <p class="day-description">
+                            Explore Pokhara viewpoints, lake area and
+                            mountain scenery.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-mountains"></i>
+                                Pokhara
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Pokhara Hotel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">5</div>
+                        <h3 class="day-title">Return / Leisure</h3>
+                        <p class="day-description">
+                            Relaxed sightseeing and local shopping before
+                            onward travel.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-shop"></i>
+                                Local Experience
+                            </span>
+                            <span class="day-tag">
+                                <i class="bi bi-building"></i>
+                                Stay: Pokhara / Kathmandu
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-number">6</div>
+                        <h3 class="day-title">Departure</h3>
+                        <p class="day-description">
+                            Breakfast, checkout and departure transfer.
+                        </p>
+                        <div class="day-meta">
+                            <span class="day-tag">
+                                <i class="bi bi-airplane"></i>
+                                Departure
+                            </span>
+                        </div>
+                    </div>
+
+
+                <!-- GENERIC FALLBACK -->
+
+                {% else %}
+
+                    {% for day in range(1, package.duration + 1) %}
+
+                        <div class="day-card">
+
+                            <div class="day-number">
+                                {{ day }}
+                            </div>
+
+                            {% if day == 1 %}
+
+                                <h3 class="day-title">
+                                    Arrival & Local Exploration
+                                </h3>
+
+                                <p class="day-description">
+                                    Arrive at {{ package.destination }},
+                                    transfer to the hotel, complete
+                                    check-in and explore nearby attractions
+                                    and local areas.
+                                </p>
+
+                            {% elif day == package.duration %}
+
+                                <h3 class="day-title">
+                                    Checkout & Departure
+                                </h3>
+
+                                <p class="day-description">
+                                    Enjoy breakfast, complete checkout
+                                    and proceed for your departure journey.
+                                </p>
+
+                            {% else %}
+
+                                <h3 class="day-title">
+                                    {{ package.destination }} Sightseeing
+                                </h3>
+
+                                <p class="day-description">
+                                    Explore important attractions,
+                                    local experiences, food and sightseeing
+                                    around {{ package.destination }}.
+                                </p>
+
+                            {% endif %}
+
+
+                            <div class="day-meta">
+
+                                <span class="day-tag">
+                                    <i class="bi bi-geo-alt"></i>
+
+                                    {{ package.destination }}
+                                </span>
+
+
+                                {% if day != package.duration %}
+
+                                    <span class="day-tag">
+                                        <i class="bi bi-building"></i>
+
+                                        Stay:
+                                        {{ package.hotel }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="day-tag">
+                                        <i class="bi bi-airplane"></i>
+
+                                        Departure
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+
+            </section>
+
+
+            <!-- =================================================
+                 INCLUSIONS / EXCLUSIONS
+            ================================================== -->
+
+            <section class="card" style="margin-top:24px;">
+
+                <h2 class="section-title">
+                    <i class="bi bi-check2-circle"></i>
+                    Package Includes & Excludes
+                </h2>
+
+
+                <div class="check-list">
+
+                    <div class="check-item included">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        <span>
+                            {{ package.inclusions }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="check-item excluded">
+
+                        <i class="bi bi-x-circle-fill"></i>
+
+                        <span>
+                            {{ package.exclusions }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- =================================================
+             RIGHT BOOKING CARD
+        ================================================== -->
+
+        <aside class="card booking-card">
+
+
+            <div class="price-label">
+                Starting from
+            </div>
+
+
+            <div class="price">
+                ₹{{ '{:,.0f}'.format(package.price) }}
+            </div>
+
+
+            <div class="per-person">
+                Estimated package price
+            </div>
+
+
+            <div class="price-note">
+
+                <i class="bi bi-info-circle"></i>
+
+                Price may change according to travel date,
+                number of travellers, hotel category,
+                transport and customized activities.
+
+            </div>
+
+
+            <a
+                href="{{ url_for('customize_package', package_id=package.id) }}"
+                class="btn btn-primary"
+            >
+
+                <i class="bi bi-sliders"></i>
+
+                Customize Package
+
+            </a>
+
+
+            <a
+                href="{{ url_for('new_requirement', package_id=package.id) }}"
+                class="btn btn-secondary"
+            >
+
+                <i class="bi bi-chat-dots"></i>
+
+                Send Requirement
+
+            </a>
+
+
+            <div style="
+                margin-top:25px;
+                padding-top:20px;
+                border-top:1px solid rgba(255,255,255,0.07);
+            ">
+
+                <div style="
+                    color:#27d3a2;
+                    font-size:13px;
+                    font-weight:800;
+                    margin-bottom:9px;
+                ">
+                    <i class="bi bi-shield-check"></i>
+                    SmartTrip Support
+                </div>
+
+                <div style="
+                    color:#8398a5;
+                    font-size:12px;
+                    line-height:1.7;
+                ">
+                    Tell us your preferred dates, travellers,
+                    budget and special requirements. Our travel
+                    planning system can help customize this package.
+                </div>
+
+            </div>
+
+
+        </aside>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

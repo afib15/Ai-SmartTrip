@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Favourite Destinations - AI SmartTrip</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        body {
+            background: #f6fbf9;
+        }
+
+        .fav-wrapper {
+
+            width: min(1150px, 92%);
+
+            margin: auto;
+
+            padding: 40px 0 70px;
+        }
+
+        .fav-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            margin-bottom: 30px;
+
+            gap: 20px;
+        }
+
+        .fav-header h1 {
+
+            margin: 0 0 7px;
+
+            color: #102a43;
+
+            font-size: 38px;
+        }
+
+        .fav-header h1 span {
+
+            color: #16a879;
+        }
+
+        .fav-header p {
+
+            margin: 0;
+
+            color: #829ab1;
+        }
+
+        .explore-btn {
+
+            background: #16a879;
+
+            color: white;
+
+            padding: 12px 18px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .explore-btn:hover {
+
+            background: #0d8b63;
+        }
+
+        .destination-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+        .destination-card {
+
+            background: white;
+
+            border-radius: 23px;
+
+            overflow: hidden;
+
+            border: 1px solid #edf4f1;
+
+            box-shadow:
+                0 8px 25px
+                rgba(16,42,67,0.06);
+
+            transition: 0.25s;
+        }
+
+        .destination-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 18px 35px
+                rgba(16,42,67,0.10);
+        }
+
+        .destination-image {
+
+            height: 190px;
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 65px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dff5ed,
+                    #dcecff
+                );
+        }
+
+        .destination-card:nth-child(2)
+        .destination-image {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0dd,
+                    #ffe2d5
+                );
+        }
+
+        .destination-card:nth-child(3)
+        .destination-image {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e6e0ff,
+                    #dce6ff
+                );
+        }
+
+        .destination-card:nth-child(4)
+        .destination-image {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff3c9,
+                    #dff5ed
+                );
+        }
+
+        .destination-card:nth-child(5)
+        .destination-image {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dff0ff,
+                    #e8e0ff
+                );
+        }
+
+        .destination-card:nth-child(6)
+        .destination-image {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffe2e8,
+                    #fff1d9
+                );
+        }
+
+        .heart-btn {
+
+            position: absolute;
+
+            top: 14px;
+
+            right: 14px;
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            background:
+                rgba(255,255,255,0.9);
+
+            color: #e0526b;
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 12px
+                rgba(0,0,0,0.08);
+        }
+
+        .destination-content {
+
+            padding: 20px;
+        }
+
+        .destination-content h2 {
+
+            color: #102a43;
+
+            margin: 0 0 5px;
+
+            font-size: 21px;
+        }
+
+        .country {
+
+            color: #829ab1;
+
+            font-size: 13px;
+
+            margin-bottom: 14px;
+        }
+
+        .destination-tags {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-bottom: 18px;
+        }
+
+        .tag {
+
+            background: #f1f8f5;
+
+            color: #0d8b63;
+
+            padding: 6px 9px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .destination-bottom {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border-top: 1px solid #edf4f1;
+
+            padding-top: 15px;
+        }
+
+        .price-label {
+
+            color: #829ab1;
+
+            font-size: 11px;
+
+            display: block;
+        }
+
+        .price {
+
+            color: #102a43;
+
+            font-weight: 800;
+
+            font-size: 14px;
+        }
+
+        .plan-btn {
+
+            background: #e8f8f2;
+
+            color: #0d8b63;
+
+            border-radius: 10px;
+
+            padding: 9px 12px;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .plan-btn:hover {
+
+            background: #16a879;
+
+            color: white;
+        }
+
+        .empty-box {
+
+            background: white;
+
+            border: 1px dashed #cfe2da;
+
+            border-radius: 25px;
+
+            padding: 55px 25px;
+
+            text-align: center;
+
+            color: #829ab1;
+        }
+
+        .empty-box i {
+
+            font-size: 50px;
+
+            color: #16a879;
+
+        }
+
+        @media(max-width:900px) {
+
+            .destination-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .destination-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .fav-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .fav-header h1 {
+
+                font-size: 32px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="smart-navbar">
+
+    <div class="navbar-inner">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="brand"
+        >
+
+            <div class="brand-icon">
+                ✈️
+            </div>
+
+            AI <span>SmartTrip</span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('create_trip') }}">
+                Plan Trip
+            </a>
+
+            <a href="{{ url_for('favourites') }}">
+                Favourites
+            </a>
+
+            <a href="{{ url_for('assistant') }}">
+                AI Assistant
+            </a>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="btn-smart btn-outline-smart"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<main class="fav-wrapper">
+
+
+    <div class="fav-header">
+
+        <div>
+
+            <h1>
+                Your
+                <span>Favourite Places</span>
+            </h1>
+
+            <p>
+                Destinations you may want to explore.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('create_trip') }}"
+            class="explore-btn"
+        >
+
+            <i class="bi bi-plus-lg"></i>
+
+            Plan New Trip
+
+        </a>
+
+    </div>
+
+
+
+    <div class="destination-grid">
+
+
+        <!-- GOA -->
+
+        <article class="destination-card">
+
+            <div class="destination-image">
+
+                🏝️
+
+                <button class="heart-btn">
+                    ♥
+                </button>
+
+            </div>
+
+
+            <div class="destination-content">
+
+                <h2>
+                    Goa
+                </h2>
+
+                <div class="country">
+                    🇮🇳 India
+                </div>
+
+
+                <div class="destination-tags">
+
+                    <span class="tag">
+                        Beaches
+                    </span>
+
+                    <span class="tag">
+                        Food
+                    </span>
+
+                    <span class="tag">
+                        Nightlife
+                    </span>
+
+                </div>
+
+
+                <div class="destination-bottom">
+
+                    <div>
+
+                        <span class="price-label">
+                            Suggested budget
+                        </span>
+
+                        <span class="price">
+                            ₹15K – ₹30K
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="plan-btn"
+                    >
+                        Plan Trip
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- KASHMIR -->
+
+        <article class="destination-card">
+
+            <div class="destination-image">
+
+                🏔️
+
+                <button class="heart-btn">
+                    ♥
+                </button>
+
+            </div>
+
+
+            <div class="destination-content">
+
+                <h2>
+                    Kashmir
+                </h2>
+
+                <div class="country">
+                    🇮🇳 India
+                </div>
+
+
+                <div class="destination-tags">
+
+                    <span class="tag">
+                        Mountains
+                    </span>
+
+                    <span class="tag">
+                        Nature
+                    </span>
+
+                    <span class="tag">
+                        Adventure
+                    </span>
+
+                </div>
+
+
+                <div class="destination-bottom">
+
+                    <div>
+
+                        <span class="price-label">
+                            Suggested budget
+                        </span>
+
+                        <span class="price">
+                            ₹20K – ₹40K
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="plan-btn"
+                    >
+                        Plan Trip
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- DUBAI -->
+
+        <article class="destination-card">
+
+            <div class="destination-image">
+
+                🏙️
+
+                <button class="heart-btn">
+                    ♥
+                </button>
+
+            </div>
+
+
+            <div class="destination-content">
+
+                <h2>
+                    Dubai
+                </h2>
+
+                <div class="country">
+                    🇦🇪 UAE
+                </div>
+
+
+                <div class="destination-tags">
+
+                    <span class="tag">
+                        Luxury
+                    </span>
+
+                    <span class="tag">
+                        Shopping
+                    </span>
+
+                    <span class="tag">
+                        City
+                    </span>
+
+                </div>
+
+
+                <div class="destination-bottom">
+
+                    <div>
+
+                        <span class="price-label">
+                            Suggested budget
+                        </span>
+
+                        <span class="price">
+                            ₹45K – ₹80K
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="plan-btn"
+                    >
+                        Plan Trip
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- MANALI -->
+
+        <article class="destination-card">
+
+            <div class="destination-image">
+
+                🏞️
+
+                <button class="heart-btn">
+                    ♥
+                </button>
+
+            </div>
+
+
+            <div class="destination-content">
+
+                <h2>
+                    Manali
+                </h2>
+
+                <div class="country">
+                    🇮🇳 India
+                </div>
+
+
+                <div class="destination-tags">
+
+                    <span class="tag">
+                        Snow
+                    </span>
+
+                    <span class="tag">
+                        Nature
+                    </span>
+
+                    <span class="tag">
+                        Trekking
+                    </span>
+
+                </div>
+
+
+                <div class="destination-bottom">
+
+                    <div>
+
+                        <span class="price-label">
+                            Suggested budget
+                        </span>
+
+                        <span class="price">
+                            ₹12K – ₹25K
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="plan-btn"
+                    >
+                        Plan Trip
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PARIS -->
+
+        <article class="destination-card">
+
+            <div class="destination-image">
+
+                🗼
+
+                <button class="heart-btn">
+                    ♥
+                </button>
+
+            </div>
+
+
+            <div class="destination-content">
+
+                <h2>
+                    Paris
+                </h2>
+
+                <div class="country">
+                    🇫🇷 France
+                </div>
+
+
+                <div class="destination-tags">
+
+                    <span class="tag">
+                        Culture
+                    </span>
+
+                    <span class="tag">
+                        Food
+                    </span>
+
+                    <span class="tag">
+                        History
+                    </span>
+
+                </div>
+
+
+                <div class="destination-bottom">
+
+                    <div>
+
+                        <span class="price-label">
+                            Suggested budget
+                        </span>
+
+                        <span class="price">
+                            ₹80K – ₹1.5L
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="plan-btn"
+                    >
+                        Plan Trip
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- BALI -->
+
+        <article class="destination-card">
+
+            <div class="destination-image">
+
+                🌴
+
+                <button class="heart-btn">
+                    ♥
+                </button>
+
+            </div>
+
+
+            <div class="destination-content">
+
+                <h2>
+                    Bali
+                </h2>
+
+                <div class="country">
+                    🇮🇩 Indonesia
+                </div>
+
+
+                <div class="destination-tags">
+
+                    <span class="tag">
+                        Beaches
+                    </span>
+
+                    <span class="tag">
+                        Culture
+                    </span>
+
+                    <span class="tag">
+                        Relax
+                    </span>
+
+                </div>
+
+
+                <div class="destination-bottom">
+
+                    <div>
+
+                        <span class="price-label">
+                            Suggested budget
+                        </span>
+
+                        <span class="price">
+                            ₹50K – ₹90K
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('create_trip') }}"
+                        class="plan-btn"
+                    >
+                        Plan Trip
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+</main>
+
+
+
+<footer class="smart-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            ✈️ AI <span>SmartTrip</span>
+        </div>
+
+        <div class="footer-text">
+            Smart planning. Better journeys. ✨
+        </div>
+
+        <div class="footer-text">
+            TY BSc Computer Science Project
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

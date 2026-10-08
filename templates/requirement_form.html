@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Travel Requirement | AI SmartTrip</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+body{background:#07111f;color:#f8fafc;font-family:Inter,Arial,sans-serif}
+.navbar{background:#07111f;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand{color:white;font-size:23px;font-weight:800;text-decoration:none}
+.brand span{color:#34d399}
+.main{padding:55px 20px}
+.card-dark{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:28px}
+.form-control,.form-select{background:#0d1b2c;color:white;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px}
+.form-control:focus,.form-select:focus{background:#0d1b2c;color:white;border-color:#34d399;box-shadow:none}
+.form-select option{background:#0d1b2c;color:white}
+label{color:#cbd5e1;font-weight:700;margin-bottom:8px}
+.muted{color:#94a3b8}
+.btn-main{background:#34d399;color:#04130d;border:none;border-radius:12px;padding:13px 22px;font-weight:800}
+.btn-main:hover{background:#6ee7b7;color:#04130d}
+.package-selected{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);padding:18px;border-radius:15px}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<div class="container py-3 d-flex justify-content-between align-items-center">
+<a href="{{ url_for('dashboard') }}" class="brand">AI <span>SmartTrip</span></a>
+<a href="{{ url_for('packages') }}" class="btn btn-outline-light">Packages</a>
+</div>
+</nav>
+
+<div class="main">
+<div class="container">
+<div class="mb-4">
+<h1><i class="bi bi-person-lines-fill" style="color:#34d399"></i> Tell Us Your Travel Requirements</h1>
+<p class="muted">Create a personalized trip request according to your budget, preferences and travel needs.</p>
+</div>
+
+{% if package %}
+<div class="package-selected mb-4">
+<strong>Selected Package:</strong> {{ package.name }}
+<span class="muted">— ₹{{ "{:,.0f}".format(package.price) }}</span>
+</div>
+{% endif %}
+
+<form method="POST">
+<div class="row g-4">
+<div class="col-lg-8">
+<div class="card-dark mb-4">
+<h4 class="mb-4">Trip Information</h4>
+<div class="row g-3">
+<div class="col-md-6">
+<label for="destination">Destination *</label>
+<input id="destination" type="text" name="destination" class="form-control" placeholder="e.g. Goa, Kashmir, Dubai" value="{{ package.destination if package else request.form.get('destination', '') }}" required maxlength="150">
+</div>
+<div class="col-md-6">
+<label for="travel_date">Travel Date</label>
+<input id="travel_date" type="date" name="travel_date" class="form-control" value="{{ request.form.get('travel_date', '') }}">
+</div>
+<div class="col-md-4">
+<label for="duration">Duration (Days) *</label>
+<input id="duration" type="number" name="duration" class="form-control" min="1" max="60" value="{{ package.duration if package else request.form.get('duration', 3) }}" required>
+</div>
+<div class="col-md-4">
+<label for="adults">Adults *</label>
+<input id="adults" type="number" name="adults" class="form-control" min="1" max="50" value="{{ request.form.get('adults', 2) }}" required>
+</div>
+<div class="col-md-4">
+<label for="children">Children</label>
+<input id="children" type="number" name="children" class="form-control" min="0" max="50" value="{{ request.form.get('children', 0) }}">
+</div>
+<div class="col-md-6">
+<label for="budget">Budget (₹)</label>
+<input id="budget" type="number" name="budget" class="form-control" min="0" placeholder="Your approximate budget" value="{{ request.form.get('budget', '') }}">
+</div>
+</div>
+</div>
+
+<div class="card-dark mb-4">
+<h4 class="mb-4">Stay &amp; Transportation</h4>
+<div class="row g-3">
+<div class="col-md-6">
+<label for="hotel_type">Hotel Preference</label>
+<select id="hotel_type" name="hotel_type" class="form-select">
+{% set hotel_choice = request.form.get('hotel_type', '3-Star') %}
+{% for option in ['3-Star', '4-Star', '5-Star', 'Luxury'] %}
+<option value="{{ option }}" {% if hotel_choice == option %}selected{% endif %}>{{ option }}</option>
+{% endfor %}
+</select>
+</div>
+<div class="col-md-6">
+<label for="transport_type">Transportation</label>
+<select id="transport_type" name="transport_type" class="form-select">
+{% set transport_choice = request.form.get('transport_type', 'Shared') %}
+{% for option in ['Shared', 'Private', 'Premium'] %}
+<option value="{{ option }}" {% if transport_choice == option %}selected{% endif %}>{{ option }}</option>
+{% endfor %}
+</select>
+</div>
+<div class="col-md-12">
+<label for="food_preference">Food Preference</label>
+<select id="food_preference" name="food_preference" class="form-select">
+{% set food_choice = request.form.get('food_preference', 'Breakfast') %}
+{% for option in ['Breakfast', 'Half Board', 'Full Board', 'Local Food'] %}
+<option value="{{ option }}" {% if food_choice == option %}selected{% endif %}>
+{% if option == 'Local Food' %}Local Food Experience{% else %}{{ option }}{% endif %}
+</option>
+{% endfor %}
+</select>
+</div>
+</div>
+</div>
+
+<div class="card-dark mb-4">
+<h4 class="mb-4">Interests</h4>
+<input type="text" name="interests" class="form-control" placeholder="Beach, adventure, shopping, nature, food..." value="{{ request.form.get('interests', '') }}" maxlength="500">
+</div>
+
+<div class="card-dark">
+<h4 class="mb-4">Special Requirements</h4>
+<textarea name="special_requirements" class="form-control" rows="5" maxlength="2000" placeholder="Tell us anything special you need...">{{ request.form.get('special_requirements', '') }}</textarea>
+</div>
+</div>
+
+<div class="col-lg-4">
+<div class="card-dark sticky-lg-top" style="top:20px">
+<h4>Why use Custom Trip?</h4>
+<div class="mt-4">
+<p><i class="bi bi-check-circle" style="color:#34d399"></i> Personalized itinerary</p>
+<p><i class="bi bi-check-circle" style="color:#34d399"></i> Budget-based planning</p>
+<p><i class="bi bi-check-circle" style="color:#34d399"></i> Custom hotel selection</p>
+<p><i class="bi bi-check-circle" style="color:#34d399"></i> Transport preferences</p>
+<p><i class="bi bi-check-circle" style="color:#34d399"></i> Special requirements</p>
+</div>
+<hr style="border-color:rgba(255,255,255,.1)">
+<button type="submit" class="btn-main w-100"><i class="bi bi-send"></i> Submit Requirement</button>
+<a href="{{ url_for('my_requirements') }}" class="btn btn-outline-light w-100 mt-3">View My Requirements</a>
+<p class="muted small mt-3 mb-0">Your request will be saved to your account for review.</p>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+</body>
+</html>

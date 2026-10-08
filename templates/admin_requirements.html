@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Requirements - AI SmartTrip Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: auto;
+            padding: 35px;
+        }
+
+        .top {
+            margin-bottom: 25px;
+        }
+
+        .top a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .top h1 {
+            margin: 18px 0 8px;
+        }
+
+        .top p {
+            color: #6b7280;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 13px;
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+        }
+
+        input {
+            min-width: 280px;
+            flex: 1;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f4f6;
+            padding: 13px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        .status-form {
+            display: flex;
+            gap: 6px;
+        }
+
+        .status-form select {
+            padding: 7px;
+            font-size: 12px;
+        }
+
+        .status-form button {
+            padding: 7px 10px;
+            font-size: 12px;
+        }
+
+        .customer {
+            font-weight: bold;
+        }
+
+        .email {
+            color: #6b7280;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="main">
+
+    <div class="top">
+
+        <a href="{{ url_for('admin_dashboard') }}">
+            ← Admin Dashboard
+        </a>
+
+        <h1>
+            Customer Requirements
+        </h1>
+
+        <p>
+            Manage custom travel requests submitted by customers.
+        </p>
+
+    </div>
+
+
+    <div class="filters">
+
+        <form method="GET"
+              action="{{ url_for('admin_requirements') }}">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ search }}"
+                placeholder="Search customer, email or destination..."
+            >
+
+
+            <select name="status">
+
+                <option value="">
+                    All Statuses
+                </option>
+
+                <option value="Pending"
+                    {% if status == 'Pending' %}selected{% endif %}>
+                    Pending
+                </option>
+
+                <option value="Contacted"
+                    {% if status == 'Contacted' %}selected{% endif %}>
+                    Contacted
+                </option>
+
+                <option value="Quote Sent"
+                    {% if status == 'Quote Sent' %}selected{% endif %}>
+                    Quote Sent
+                </option>
+
+                <option value="Confirmed"
+                    {% if status == 'Confirmed' %}selected{% endif %}>
+                    Confirmed
+                </option>
+
+                <option value="Cancelled"
+                    {% if status == 'Cancelled' %}selected{% endif %}>
+                    Cancelled
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Filter
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="table-card">
+
+        {% if requirements %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Customer</th>
+                    <th>Destination</th>
+                    <th>Travel Date</th>
+                    <th>People</th>
+                    <th>Budget</th>
+                    <th>Status</th>
+                    <th>Update</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for requirement in requirements %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="customer">
+                            {{ requirement.user.name if requirement.user else 'Unknown' }}
+                        </div>
+
+                        <div class="email">
+                            {{ requirement.user.email if requirement.user else '' }}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        {{ requirement.destination }}
+                    </td>
+
+
+                    <td>
+                        {{ requirement.travel_date or 'Not specified' }}
+                    </td>
+
+
+                    <td>
+                        {{ requirement.adults }} Adults,
+                        {{ requirement.children }} Children
+                    </td>
+
+
+                    <td>
+                        ₹{{ requirement.budget or 'Not specified' }}
+                    </td>
+
+
+                    <td>
+                        {{ requirement.status }}
+                    </td>
+
+
+                    <td>
+
+                        <form
+                            method="POST"
+                            class="status-form"
+                            action="{{ url_for(
+                                'admin_update_requirement_status',
+                                requirement_id=requirement.id
+                            ) }}"
+                        >
+
+                            <select name="status">
+
+                                <option value="Pending"
+                                    {% if requirement.status == 'Pending' %}selected{% endif %}>
+                                    Pending
+                                </option>
+
+                                <option value="Contacted"
+                                    {% if requirement.status == 'Contacted' %}selected{% endif %}>
+                                    Contacted
+                                </option>
+
+                                <option value="Quote Sent"
+                                    {% if requirement.status == 'Quote Sent' %}selected{% endif %}>
+                                    Quote Sent
+                                </option>
+
+                                <option value="Confirmed"
+                                    {% if requirement.status == 'Confirmed' %}selected{% endif %}>
+                                    Confirmed
+                                </option>
+
+                                <option value="Cancelled"
+                                    {% if requirement.status == 'Cancelled' %}selected{% endif %}>
+                                    Cancelled
+                                </option>
+
+                            </select>
+
+                            <button type="submit">
+                                Save
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            No requirements found.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

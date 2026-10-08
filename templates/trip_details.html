@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ trip.destination }} - AI SmartTrip
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        body {
+            background: #f6fbf9;
+        }
+
+        .details-wrapper {
+            width: min(1180px, 92%);
+            margin: auto;
+            padding: 35px 0 70px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #829ab1;
+            font-size: 14px;
+            margin-bottom: 22px;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #16a879;
+        }
+
+        /* HERO */
+
+        .trip-hero {
+            background:
+                linear-gradient(
+                    120deg,
+                    #102a43,
+                    #17624f
+                );
+
+            color: white;
+            border-radius: 30px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .trip-hero::after {
+            content: "✈";
+            position: absolute;
+            right: 30px;
+            bottom: -60px;
+            font-size: 230px;
+            opacity: 0.06;
+            transform: rotate(-15deg);
+        }
+
+        .trip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .trip-hero h1 {
+            margin: 0 0 10px;
+            font-size: 45px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .trip-hero p {
+            margin: 0;
+            color: #c8d8e2;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.1);
+            padding: 9px 13px;
+            border-radius: 11px;
+            font-size: 13px;
+        }
+
+        /* GRID */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1.45fr 0.75fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .details-card {
+            background: white;
+            border-radius: 23px;
+            padding: 27px;
+            border: 1px solid #edf4f1;
+            box-shadow:
+                0 5px 20px rgba(16,42,67,0.05);
+            margin-bottom: 20px;
+        }
+
+        .details-card h2 {
+            margin-top: 0;
+            color: #102a43;
+            font-size: 22px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-label-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: #e8f8f2;
+            color: #16a879;
+            font-size: 20px;
+        }
+
+        /* ITINERARY */
+
+        .itinerary-day {
+            border: 1px solid #edf4f1;
+            border-radius: 17px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: #f4faf7;
+            padding: 15px 17px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #102a43;
+            font-weight: 800;
+        }
+
+        .day-circle {
+            width: 35px;
+            height: 35px;
+            background: #16a879;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .activity-row {
+            display: flex;
+            gap: 15px;
+            padding: 15px 17px;
+            border-bottom: 1px solid #edf4f1;
+        }
+
+        .activity-row:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            min-width: 85px;
+            color: #16a879;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .activity-text {
+            color: #526d82;
+            line-height: 1.5;
+        }
+
+        /* BUDGET */
+
+        .big-budget {
+            font-size: 34px;
+            color: #16a879;
+            font-weight: 850;
+            margin-bottom: 5px;
+        }
+
+        .budget-label {
+            color: #829ab1;
+            font-size: 13px;
+        }
+
+        .budget-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #edf4f1;
+        }
+
+        .budget-summary:last-child {
+            border-bottom: none;
+        }
+
+        .budget-value {
+            color: #102a43;
+            font-weight: 800;
+        }
+
+        /* EXPENSE */
+
+        .expense-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .expense-form input,
+        .expense-form select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #dcebe5;
+            border-radius: 11px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .expense-form input:focus,
+        .expense-form select:focus {
+            border-color: #16a879;
+        }
+
+        .expense-form .full {
+            grid-column: 1 / -1;
+        }
+
+        .expense-btn {
+            grid-column: 1 / -1;
+            border: none;
+            padding: 13px;
+            border-radius: 12px;
+            background: #16a879;
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .expense-btn:hover {
+            background: #0d8b63;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf4f1;
+        }
+
+        .expense-item:last-child {
+            border-bottom: none;
+        }
+
+        .expense-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .expense-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #e8f8f2;
+            color: #16a879;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expense-category {
+            color: #102a43;
+            font-weight: 800;
+        }
+
+        .expense-description {
+            color: #829ab1;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .expense-amount {
+            color: #102a43;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        .expense-total-box {
+            background: #f4faf7;
+            border-radius: 15px;
+            padding: 17px;
+            margin-bottom: 20px;
+        }
+
+        .expense-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .remaining-positive {
+            color: #16a879;
+            font-weight: 850;
+        }
+
+        .remaining-negative {
+            color: #d64545;
+            font-weight: 850;
+        }
+
+        /* WEATHER */
+
+        .weather-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    #eef9ff,
+                    #f8fcff
+                );
+
+            border: 1px solid #d9edf7;
+        }
+
+        .weather-main {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 15px 0 20px;
+        }
+
+        .weather-icon {
+            font-size: 55px;
+            line-height: 1;
+        }
+
+        .weather-temperature {
+            font-size: 42px;
+            font-weight: 850;
+            color: #102a43;
+        }
+
+        .weather-condition {
+            color: #526d82;
+            font-weight: 700;
+        }
+
+        .weather-location {
+            color: #829ab1;
+            font-size: 13px;
+        }
+
+        .weather-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .weather-stat {
+            background: white;
+            border: 1px solid #e3eff5;
+            border-radius: 13px;
+            padding: 13px;
+        }
+
+        .weather-stat-label {
+            display: block;
+            color: #829ab1;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .weather-stat-value {
+            color: #102a43;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .packing-box {
+            margin-top: 16px;
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            border-left: 4px solid #16a879;
+        }
+
+        .packing-box strong {
+            color: #102a43;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .packing-box p {
+            color: #526d82;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .forecast-title {
+            margin-top: 22px;
+            margin-bottom: 10px;
+            color: #102a43;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .forecast-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .forecast-item {
+            background: white;
+            border: 1px solid #e3eff5;
+            border-radius: 12px;
+            padding: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .forecast-day {
+            color: #526d82;
+            font-size: 12px;
+        }
+
+        .forecast-weather {
+            font-size: 18px;
+        }
+
+        .forecast-temp {
+            color: #102a43;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .weather-unavailable {
+            background: #f8fafb;
+            border: 1px solid #e8eef1;
+            border-radius: 14px;
+            padding: 16px;
+            color: #6d8292;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        /* ACTIONS */
+
+        .action-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px;
+            border-radius: 13px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .action-primary {
+            background: #16a879;
+            color: white;
+        }
+
+        .action-secondary {
+            background: #e8f8f2;
+            color: #0d8b63;
+        }
+
+        .action-danger {
+            background: #fff0f0;
+            color: #d64545;
+        }
+
+        /* AI TIP */
+
+        .ai-tip {
+            background:
+                linear-gradient(
+                    145deg,
+                    #e8f8f2,
+                    #f6fffb
+                );
+
+            border: 1px solid #d5eee3;
+        }
+
+        .ai-tip h3 {
+            color: #102a43;
+            margin-top: 0;
+        }
+
+        .ai-tip p {
+            color: #526d82;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trip-hero h1 {
+                font-size: 36px;
+            }
+
+            .expense-form {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-form .full {
+                grid-column: auto;
+            }
+
+            .expense-btn {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="smart-navbar">
+
+    <div class="navbar-inner">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="brand"
+        >
+
+            <div class="brand-icon">
+                ✈️
+            </div>
+
+            AI <span>SmartTrip</span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('create_trip') }}">
+                Plan Trip
+            </a>
+
+            <a href="{{ url_for('favourites') }}">
+                Favourites
+            </a>
+
+            <a href="{{ url_for('assistant') }}">
+                AI Assistant
+            </a>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="btn-smart btn-outline-smart"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<main class="details-wrapper">
+
+
+    <!-- BACK -->
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="back-link"
+    >
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to My Trips
+
+    </a>
+
+
+    <!-- ====================================================
+         TRIP HERO
+    ===================================================== -->
+
+    <section class="trip-hero">
+
+        <div class="trip-badge">
+
+            <i class="bi bi-stars"></i>
+
+            AI SMARTTRIP JOURNEY
+
+        </div>
+
+
+        <h1>
+            {{ trip.destination }}
+        </h1>
+
+
+        <p>
+            Your personalized travel experience
+        </p>
+
+
+        <div class="hero-meta">
+
+            <span class="hero-tag">
+
+                <i class="bi bi-calendar3"></i>
+
+                {{ trip.duration }} Days
+
+            </span>
+
+
+            <span class="hero-tag">
+
+                <i class="bi bi-people"></i>
+
+                {{ trip.travellers }} Travellers
+
+            </span>
+
+
+            <span class="hero-tag">
+
+                <i class="bi bi-currency-rupee"></i>
+
+                ₹{{ "{:,.0f}".format(trip.budget) }}
+
+            </span>
+
+
+            {% if trip.interests %}
+
+            <span class="hero-tag">
+
+                <i class="bi bi-heart"></i>
+
+                {{ trip.interests }}
+
+            </span>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <div class="details-grid">
+
+
+        <!-- =================================================
+             LEFT COLUMN
+        ================================================== -->
+
+        <div>
+
+
+            <!-- =============================================
+                 ITINERARY
+            ============================================== -->
+
+            <section class="details-card">
+
+                <div class="section-label">
+
+                    <div class="section-label-icon">
+
+                        <i class="bi bi-map"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2 style="margin:0;">
+                            Your AI Itinerary
+                        </h2>
+
+                        <small style="color:#829ab1;">
+                            Your journey at a glance
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                {% if itinerary and itinerary.get("days") %}
+
+                    {% for day in itinerary.get("days") %}
+
+                    <div class="itinerary-day">
+
+                        <div class="day-header">
+
+                            <div class="day-circle">
+
+                                {{ loop.index }}
+
+                            </div>
+
+                            {{ day.get("title", "Day " ~ loop.index) }}
+
+                        </div>
+
+
+                        {% for activity in day.get("activities", []) %}
+
+                        <div class="activity-row">
+
+                            <div class="activity-time">
+
+                                {{ activity.get("time", "") }}
+
+                            </div>
+
+                            <div class="activity-text">
+
+                                {{ activity.get("activity", "") }}
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div
+                        style="
+                        background:#f4faf7;
+                        border-radius:15px;
+                        padding:22px;
+                        color:#526d82;
+                        line-height:1.7;
+                        "
+                    >
+
+                        Your personalized itinerary
+                        will appear here.
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =============================================
+                 EXPENSE TRACKER
+            ============================================== -->
+
+            <section class="details-card">
+
+                <div class="section-label">
+
+                    <div class="section-label-icon">
+
+                        <i class="bi bi-wallet2"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2 style="margin:0;">
+                            Smart Expense Tracker
+                        </h2>
+
+                        <small style="color:#829ab1;">
+                            Track your actual travel spending
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="expense-total-box">
+
+                    <div class="expense-total-row">
+
+                        <span class="budget-label">
+                            Planned Budget
+                        </span>
+
+                        <strong>
+                            ₹{{ "{:,.2f}".format(trip.budget) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="expense-total-row">
+
+                        <span class="budget-label">
+                            Actual Spending
+                        </span>
+
+                        <strong>
+                            ₹{{ "{:,.2f}".format(actual_expense) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="expense-total-row">
+
+                        <span class="budget-label">
+                            Remaining
+                        </span>
+
+                        <span
+                            class="
+                            {% if remaining_budget >= 0 %}
+                                remaining-positive
+                            {% else %}
+                                remaining-negative
+                            {% endif %}
+                            "
+                        >
+
+                            ₹{{ "{:,.2f}".format(remaining_budget) }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADD EXPENSE FORM -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('add_expense', trip_id=trip.id) }}"
+                    class="expense-form"
+                >
+
+                    <select
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Expense Category
+                        </option>
+
+                        <option value="Hotel">
+                            🏨 Hotel
+                        </option>
+
+                        <option value="Food">
+                            🍴 Food
+                        </option>
+
+                        <option value="Transport">
+                            🚕 Transport
+                        </option>
+
+                        <option value="Shopping">
+                            🛍️ Shopping
+                        </option>
+
+                        <option value="Activities">
+                            🎯 Activities
+                        </option>
+
+                        <option value="Other">
+                            📌 Other
+                        </option>
+
+                    </select>
+
+
+                    <input
+                        type="number"
+                        name="amount"
+                        step="0.01"
+                        min="0.01"
+                        placeholder="Amount ₹"
+                        required
+                    >
+
+
+                    <input
+                        type="text"
+                        name="description"
+                        placeholder="Description (optional)"
+                        class="full"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="expense-btn"
+                    >
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Add Expense
+
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- =============================================
+                 EXPENSE HISTORY
+            ============================================== -->
+
+            <section class="details-card">
+
+                <div class="section-label">
+
+                    <div class="section-label-icon">
+
+                        <i class="bi bi-receipt"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2 style="margin:0;">
+                            Expense History
+                        </h2>
+
+                        <small style="color:#829ab1;">
+                            Your latest travel expenses
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                {% if expenses %}
+
+                    {% for expense in expenses %}
+
+                    <div class="expense-item">
+
+                        <div class="expense-left">
+
+                            <div class="expense-icon">
+
+                                {% if expense.category == "Hotel" %}
+                                    <i class="bi bi-building"></i>
+
+                                {% elif expense.category == "Food" %}
+                                    <i class="bi bi-cup-hot"></i>
+
+                                {% elif expense.category == "Transport" %}
+                                    <i class="bi bi-car-front"></i>
+
+                                {% elif expense.category == "Shopping" %}
+                                    <i class="bi bi-bag"></i>
+
+                                {% elif expense.category == "Activities" %}
+                                    <i class="bi bi-ticket-perforated"></i>
+
+                                {% else %}
+                                    <i class="bi bi-receipt"></i>
+                                {% endif %}
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="expense-category">
+
+                                    {{ expense.category }}
+
+                                </div>
+
+
+                                {% if expense.description %}
+
+                                <div class="expense-description">
+
+                                    {{ expense.description }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="expense-amount">
+
+                            ₹{{ "{:,.2f}".format(expense.amount) }}
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div
+                        style="
+                        text-align:center;
+                        padding:25px;
+                        color:#829ab1;
+                        "
+                    >
+
+                        <i
+                            class="bi bi-receipt"
+                            style="font-size:30px;"
+                        ></i>
+
+                        <p>
+                            No expenses added yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =============================================
+                 TRAVEL PREFERENCES
+            ============================================== -->
+
+            {% if trip.interests %}
+
+            <section class="details-card">
+
+                <div class="section-label">
+
+                    <div class="section-label-icon">
+
+                        <i class="bi bi-heart"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2 style="margin:0;">
+                            Your Travel Preferences
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <p
+                    style="
+                    color:#526d82;
+                    line-height:1.7;
+                    "
+                >
+
+                    {{ trip.interests }}
+
+                </p>
+
+            </section>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =================================================
+             RIGHT COLUMN
+        ================================================== -->
+
+        <aside>
+
+
+            <!-- =============================================
+                 WEATHER INTELLIGENCE
+            ============================================== -->
+
+            <section class="details-card weather-card">
+
+                <div class="section-label">
+
+                    <div class="section-label-icon">
+
+                        <i class="bi bi-cloud-sun"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2 style="margin:0;">
+                            Weather Intelligence
+                        </h2>
+
+                        <small style="color:#829ab1;">
+                            Live destination weather
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                {% if weather %}
+
+                <div class="weather-main">
+
+                    <div class="weather-icon">
+
+                        {{ weather.icon }}
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="weather-temperature">
+
+                            {{ weather.temperature|round|int }}°C
+
+                        </div>
+
+                        <div class="weather-condition">
+
+                            {{ weather.condition }}
+
+                        </div>
+
+                        <div class="weather-location">
+
+                            📍 {{ weather.city }}, {{ weather.country }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="weather-stats">
+
+                    <div class="weather-stat">
+
+                        <span class="weather-stat-label">
+                            Feels Like
+                        </span>
+
+                        <span class="weather-stat-value">
+
+                            {{ weather.apparent_temperature|round|int }}°C
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="weather-stat">
+
+                        <span class="weather-stat-label">
+                            Humidity
+                        </span>
+
+                        <span class="weather-stat-value">
+
+                            {{ weather.humidity }}%
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="weather-stat">
+
+                        <span class="weather-stat-label">
+                            Wind
+                        </span>
+
+                        <span class="weather-stat-value">
+
+                            {{ weather.wind|round|int }} km/h
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="weather-stat">
+
+                        <span class="weather-stat-label">
+                            Rain
+                        </span>
+
+                        <span class="weather-stat-value">
+
+                            {{ weather.rain|round(1) }} mm
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SMART PACKING -->
+
+                <div class="packing-box">
+
+                    <strong>
+
+                        🎒 Smart Packing Suggestion
+
+                    </strong>
+
+                    <p>
+
+                        {{ weather.packing_tip }}
+
+                    </p>
+
+                </div>
+
+
+                <!-- 3 DAY FORECAST -->
+
+                {% if weather.forecast %}
+
+                <div class="forecast-title">
+
+                    📅 3-Day Forecast
+
+                </div>
+
+
+                <div class="forecast-list">
+
+                    {% for day in weather.forecast %}
+
+                    <div class="forecast-item">
+
+                        <div class="forecast-day">
+
+                            {{ day.date }}
+
+                        </div>
+
+                        <div class="forecast-weather">
+
+                            {{ day.icon }}
+
+                        </div>
+
+                        <div class="forecast-temp">
+
+                            {{ day.min_temp|round|int }}° -
+
+                            {{ day.max_temp|round|int }}°C
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+
+                {% else %}
+
+                <div class="weather-unavailable">
+
+                    <strong>
+                        🌍 Weather data temporarily unavailable.
+                    </strong>
+
+                    <br><br>
+
+                    The trip itself will continue to work normally.
+                    Please check your internet connection and
+                    refresh the page.
+
+                </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =============================================
+                 BUDGET
+            ============================================== -->
+
+            <section class="details-card">
+
+                <div class="section-label">
+
+                    <div class="section-label-icon">
+
+                        <i class="bi bi-wallet2"></i>
+
+                    </div>
+
+                    <h2 style="margin:0;">
+                        Trip Budget
+                    </h2>
+
+                </div>
+
+
+                <div class="big-budget">
+
+                    ₹{{ "{:,.0f}".format(trip.budget) }}
+
+                </div>
+
+
+                <div class="budget-label">
+
+                    Total planned budget
+
+                </div>
+
+
+                <div style="margin-top:20px;">
+
+                    <div class="budget-summary">
+
+                        <span class="budget-label">
+                            Travellers
+                        </span>
+
+                        <span class="budget-value">
+                            {{ trip.travellers }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="budget-summary">
+
+                        <span class="budget-label">
+                            Duration
+                        </span>
+
+                        <span class="budget-value">
+                            {{ trip.duration }} days
+                        </span>
+
+                    </div>
+
+
+                    <div class="budget-summary">
+
+                        <span class="budget-label">
+                            Budget / Day
+                        </span>
+
+                        <span class="budget-value">
+
+                            ₹{{ (trip.budget / trip.duration)|round|int }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="budget-summary">
+
+                        <span class="budget-label">
+                            Spent
+                        </span>
+
+                        <span class="budget-value">
+
+                            ₹{{ "{:,.0f}".format(actual_expense) }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="budget-summary">
+
+                        <span class="budget-label">
+                            Remaining
+                        </span>
+
+                        <span
+                            class="
+                            {% if remaining_budget >= 0 %}
+                                remaining-positive
+                            {% else %}
+                                remaining-negative
+                            {% endif %}
+                            "
+                        >
+
+                            ₹{{ "{:,.0f}".format(remaining_budget) }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 QUICK ACTIONS
+            ============================================== -->
+
+            <section class="details-card">
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+
+                <a
+                    href="{{ url_for('assistant') }}"
+                    class="action-btn action-primary"
+                >
+
+                    <i class="bi bi-robot"></i>
+
+                    Ask AI Assistant
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="action-btn action-secondary"
+                >
+
+                    <i class="bi bi-grid"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('delete_trip', trip_id=trip.id) }}"
+                    onsubmit="
+                        return confirm(
+                            'Are you sure you want to delete this trip?'
+                        );
+                    "
+                >
+
+                    <button
+                        type="submit"
+                        class="action-btn action-danger"
+                    >
+
+                        <i class="bi bi-trash"></i>
+
+                        Delete Trip
+
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- =============================================
+                 AI TIP
+            ============================================== -->
+
+            <section class="details-card ai-tip">
+
+                <h3>
+
+                    ✨ Smart Travel Tip
+
+                </h3>
+
+
+                <p>
+
+                    Keep approximately 10–15% of your
+                    travel budget reserved for unexpected
+                    expenses. Weather conditions can also
+                    affect transport and outdoor activity
+                    costs.
+
+                </p>
+
+            </section>
+
+
+        </aside>
+
+
+    </div>
+
+</main>
+
+
+<footer class="smart-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            ✈️ AI <span>SmartTrip</span>
+        </div>
+
+        <div class="footer-text">
+            Smart planning. Better journeys. ✨
+        </div>
+
+        <div class="footer-text">
+            TY BSc Computer Science Project
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

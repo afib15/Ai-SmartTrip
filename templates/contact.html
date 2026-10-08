@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Contact Us - AI SmartTrip</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf8f5,
+                    #f7fbfa
+                );
+
+            color: #173d49;
+        }
+
+
+        /* ==================================================
+           NAVBAR
+        ================================================== */
+
+        .navbar {
+
+            background: white;
+
+            border-bottom:
+                1px solid #e4efeb;
+
+            padding: 18px 5%;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 10;
+        }
+
+
+        .brand {
+
+            text-decoration: none;
+
+            color: #173d49;
+
+            font-size: 21px;
+
+            font-weight: 800;
+        }
+
+
+        .brand span {
+            color: #16a879;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 20px;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #536d73;
+
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+
+        .nav-links a:hover {
+            color: #16a879;
+        }
+
+
+        /* ==================================================
+           MAIN
+        ================================================== */
+
+        .page {
+
+            width:
+                min(1150px, 92%);
+
+            margin:
+                45px auto 70px;
+        }
+
+
+        .hero {
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #10394a,
+                    #167258
+                );
+
+            border-radius: 28px;
+
+            padding: 45px;
+
+            color: white;
+
+            margin-bottom: 25px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .hero::after {
+
+            content: "✈";
+
+            position: absolute;
+
+            right: 40px;
+
+            bottom: -75px;
+
+            font-size: 240px;
+
+            opacity: .07;
+
+            transform:
+                rotate(-15deg);
+        }
+
+
+        .hero h1 {
+
+            margin: 0 0 10px;
+
+            font-size: 40px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .hero p {
+
+            margin: 0;
+
+            max-width: 650px;
+
+            line-height: 1.7;
+
+            color: #d8ebe6;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* ==================================================
+           GRID
+        ================================================== */
+
+        .content-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1.5fr;
+
+            gap: 25px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            border-radius: 22px;
+
+            border:
+                1px solid #e1eee9;
+
+            padding: 28px;
+
+            box-shadow:
+                0 12px 35px
+                rgba(21, 67, 65, .07);
+        }
+
+
+        .card h2 {
+
+            margin:
+                0 0 10px;
+
+            font-size: 21px;
+
+            color: #173d49;
+        }
+
+
+        .card-description {
+
+            color: #718487;
+
+            line-height: 1.7;
+
+            font-size: 13px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* ==================================================
+           CONTACT INFO
+        ================================================== */
+
+        .info-item {
+
+            display: flex;
+
+            gap: 14px;
+
+            align-items: center;
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid #edf3f1;
+        }
+
+
+        .info-item:last-child {
+            border-bottom: 0;
+        }
+
+
+        .info-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            border-radius: 13px;
+
+            background: #e7f8f2;
+
+            color: #129b70;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 19px;
+
+            flex-shrink: 0;
+        }
+
+
+        .info-text small {
+
+            display: block;
+
+            color: #8a9a9d;
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .info-text strong {
+
+            color: #294f58;
+
+            font-size: 13px;
+        }
+
+
+        /* ==================================================
+           FORM
+        ================================================== */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+        }
+
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            color: #35565e;
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            border:
+                1px solid #dbe9e5;
+
+            border-radius: 11px;
+
+            padding:
+                12px 13px;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            color: #274c55;
+
+            outline: none;
+
+            background: #fbfdfc;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #42c99a;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(22, 168, 121, .08);
+        }
+
+
+        textarea {
+
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        .package-box {
+
+            background: #effaf6;
+
+            border:
+                1px solid #cdeee1;
+
+            border-radius: 13px;
+
+            padding: 13px;
+
+            margin-bottom: 18px;
+
+            color: #397063;
+
+            font-size: 12px;
+        }
+
+
+        .package-box strong {
+
+            display: block;
+
+            color: #17644f;
+
+            margin-bottom: 3px;
+        }
+
+
+        .submit-btn {
+
+            width: 100%;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            padding: 14px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #16a879,
+                    #23c88f
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s,
+                box-shadow .2s;
+        }
+
+
+        .submit-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(22, 168, 121, .20);
+        }
+
+
+        /* ==================================================
+           FLASH
+        ================================================== */
+
+        .flash {
+
+            padding: 13px 16px;
+
+            border-radius: 11px;
+
+            margin-bottom: 20px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .flash.success {
+
+            background: #e8f8f1;
+
+            color: #167252;
+
+            border:
+                1px solid #c6ebdc;
+        }
+
+
+        .flash.error {
+
+            background: #fff0f0;
+
+            color: #b44545;
+
+            border:
+                1px solid #f0cccc;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media(max-width: 800px) {
+
+            .content-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+
+                padding: 32px;
+            }
+
+            .hero h1 {
+
+                font-size: 32px;
+            }
+        }
+
+
+        @media(max-width: 550px) {
+
+            .navbar {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+
+                grid-column: auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="brand"
+    >
+        ✈️ AI <span>SmartTrip</span>
+    </a>
+
+
+    <nav class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a href="{{ url_for('create_trip') }}">
+            AI Planner
+        </a>
+
+        <a href="{{ url_for('my_requirements') }}">
+            Requirements
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ======================================================
+     PAGE
+====================================================== -->
+
+<main class="page">
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>
+            Let's Plan Your Journey ✈️
+        </h1>
+
+        <p>
+            Have a question about a package, destination,
+            hotel, transportation or a custom trip?
+            Send us your requirement and our travel team
+            will help you plan the perfect journey.
+        </p>
+
+    </section>
+
+
+    <!-- FLASH MESSAGES -->
+
+    {% with messages = get_flashed_messages(
+        with_categories=true
+    ) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <section class="content-grid">
+
+
+        <!-- =================================================
+             CONTACT INFORMATION
+        ================================================== -->
+
+        <div class="card">
+
+            <h2>
+                Contact AI SmartTrip
+            </h2>
+
+            <p class="card-description">
+                Our travel support team can help with
+                package information, custom destinations,
+                hotel options and travel requirements.
+            </p>
+
+
+            <div class="info-item">
+
+                <div class="info-icon">
+                    <i class="bi bi-envelope"></i>
+                </div>
+
+                <div class="info-text">
+
+                    <small>
+                        Email Support
+                    </small>
+
+                    <strong>
+                        support@aismarttrip.com
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-icon">
+                    <i class="bi bi-telephone"></i>
+                </div>
+
+                <div class="info-text">
+
+                    <small>
+                        Travel Assistance
+                    </small>
+
+                    <strong>
+                        +91 XXXXX XXXXX
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-icon">
+                    <i class="bi bi-clock"></i>
+                </div>
+
+                <div class="info-text">
+
+                    <small>
+                        Support Hours
+                    </small>
+
+                    <strong>
+                        Monday - Saturday
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-icon">
+                    <i class="bi bi-globe2"></i>
+                </div>
+
+                <div class="info-text">
+
+                    <small>
+                        Service
+                    </small>
+
+                    <strong>
+                        Domestic & International
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INQUIRY FORM
+        ================================================== -->
+
+        <div class="card">
+
+            <h2>
+                Send an Inquiry
+            </h2>
+
+            <p class="card-description">
+                Fill in your details and tell us what
+                you need help with.
+            </p>
+
+
+            {% if package %}
+
+                <div class="package-box">
+
+                    <strong>
+                        Selected Package
+                    </strong>
+
+                    {{ package.name }}
+                    — {{ package.destination }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                action="{{ url_for('contact') }}"
+            >
+
+                {% if package %}
+
+                    <input
+                        type="hidden"
+                        name="package_id"
+                        value="{{ package.id }}"
+                    >
+
+                {% endif %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="field">
+
+                        <label>
+                            Full Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ user.name }}"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="field">
+
+                        <label>
+                            Email Address *
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ user.email }}"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="field">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="Enter your phone number"
+                        >
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="field">
+
+                        <label>
+                            Subject
+                        </label>
+
+                        <select name="subject">
+
+                            <option value="">
+                                Select inquiry type
+                            </option>
+
+                            <option value="Package Information">
+                                Package Information
+                            </option>
+
+                            <option value="Custom Trip">
+                                Custom Trip
+                            </option>
+
+                            <option value="Hotel Information">
+                                Hotel Information
+                            </option>
+
+                            <option value="Transportation">
+                                Transportation
+                            </option>
+
+                            <option value="Destination Query">
+                                Destination Query
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="field full">
+
+                        <label>
+                            Your Message *
+                        </label>
+
+                        <textarea
+                            name="message"
+                            placeholder="Tell us about your travel requirement or question..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+
+                    <i class="bi bi-send-fill"></i>
+
+                    &nbsp;
+
+                    Submit Inquiry
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

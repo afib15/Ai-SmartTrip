@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search History - AI SmartTrip</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .main {
+            max-width: 1250px;
+            margin: auto;
+            padding: 35px;
+        }
+
+        .top {
+            margin-bottom: 25px;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #6b7280;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 13px;
+            margin: 25px 0;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f4f6;
+            text-align: left;
+            padding: 13px;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        .type {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+        }
+
+        @media(max-width:650px) {
+
+            .main {
+                padding: 20px;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="main">
+
+    <div class="top">
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="back"
+        >
+            ← Admin Dashboard
+        </a>
+
+        <h1>
+            Customer Search History
+        </h1>
+
+        <div class="description">
+            See what destinations and categories customers have searched.
+        </div>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <form
+            method="GET"
+            action="{{ url_for('admin_search_history') }}"
+        >
+
+            <input
+                type="text"
+                name="q"
+                value="{{ search }}"
+                placeholder="Search destination, customer name or email..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="table-card">
+
+        {% if searches %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Search</th>
+                    <th>Type</th>
+                    <th>Date & Time</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for item in searches %}
+
+                <tr>
+
+                    <td>
+                        {{ item.user.name if item.user else 'Unknown' }}
+                    </td>
+
+                    <td>
+                        {{ item.user.email if item.user else 'N/A' }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ item.search_term }}
+                        </strong>
+                    </td>
+
+                    <td>
+
+                        <span class="type">
+                            {{ item.search_type }}
+                        </span>
+
+                    </td>
+
+                    <td>
+                        {{ item.created_at.strftime('%d %b %Y, %I:%M %p') if item.created_at else 'N/A' }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            No search history found yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

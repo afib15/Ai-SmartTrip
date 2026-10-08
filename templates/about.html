@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | AI SmartTrip</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f8fc;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            width: 100%;
+            height: 72px;
+            background: rgba(8, 22, 42, 0.97);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+
+        .logo {
+            color: white;
+            font-size: 25px;
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+        }
+
+        .logo span {
+            color: #25c4ff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #e9f3ff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #25c4ff;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #1fb6ff, #0879e8);
+            padding: 10px 18px;
+            border-radius: 8px;
+            color: white !important;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(8,121,232,0.25);
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 430px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    rgba(4, 21, 42, 0.72),
+                    rgba(4, 21, 42, 0.72)
+                ),
+                url("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=85")
+                center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            padding: 50px 25px;
+            color: white;
+        }
+
+        .hero-content .small-title {
+            color: #28c7ff;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .hero-content h1 {
+            font-size: 52px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #e2edf8;
+            max-width: 720px;
+            margin: auto;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 88%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section {
+            padding: 75px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title .tag {
+            color: #0879e8;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            margin-top: 8px;
+            color: #10243e;
+        }
+
+        .section-title p {
+            max-width: 720px;
+            margin: 12px auto 0;
+            color: #65758a;
+        }
+
+        /* ================= ABOUT GRID ================= */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 55px;
+            align-items: center;
+        }
+
+        .about-image {
+            height: 440px;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(17, 42, 70, 0.18);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.04);
+        }
+
+        .about-text h2 {
+            font-size: 36px;
+            color: #10243e;
+            margin-bottom: 18px;
+        }
+
+        .about-text h2 span {
+            color: #0879e8;
+        }
+
+        .about-text p {
+            color: #5f6f83;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        .about-points {
+            margin-top: 25px;
+            display: grid;
+            gap: 13px;
+        }
+
+        .point {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #24364d;
+        }
+
+        .point-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5f5ff;
+            color: #0879e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* ================= FEATURES ================= */
+
+        .features-section {
+            background: #ffffff;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: #f8fbff;
+            border: 1px solid #e3edf7;
+            border-radius: 17px;
+            padding: 30px 25px;
+            transition: 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(14, 66, 112, 0.12);
+            border-color: #bde7ff;
+        }
+
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #e1f5ff, #d8ecff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 19px;
+            color: #142942;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #68788c;
+        }
+
+        /* ================= MISSION ================= */
+
+        .mission {
+            background:
+                linear-gradient(
+                    135deg,
+                    #071d36,
+                    #0b3559
+                );
+            color: white;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 55px;
+            align-items: center;
+        }
+
+        .mission h2 {
+            font-size: 36px;
+            margin-bottom: 18px;
+        }
+
+        .mission h2 span {
+            color: #2bc7ff;
+        }
+
+        .mission p {
+            color: #d5e5f3;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .mission-boxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .mission-box {
+            padding: 25px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 15px;
+        }
+
+        .mission-box h3 {
+            color: #2bc7ff;
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .mission-box p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /* ================= HOW IT WORKS ================= */
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        .step-number {
+            width: 58px;
+            height: 58px;
+            margin: auto auto 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0879e8, #21c4ff);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .step h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+            color: #1a304b;
+        }
+
+        .step p {
+            color: #6c7b8e;
+            font-size: 13px;
+        }
+
+        /* ================= CTA ================= */
+
+        .cta {
+            padding: 80px 20px;
+            text-align: center;
+            background:
+                linear-gradient(
+                    rgba(5, 28, 53, 0.9),
+                    rgba(5, 28, 53, 0.9)
+                ),
+                url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85")
+                center/cover no-repeat;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 38px;
+            margin-bottom: 14px;
+        }
+
+        .cta p {
+            max-width: 650px;
+            margin: auto auto 28px;
+            color: #dce9f5;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 13px 27px;
+            background: linear-gradient(135deg, #1fb6ff, #0879e8);
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: 700;
+            transition: 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #06182c;
+            color: #c8d7e6;
+            padding: 45px 7% 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .footer-brand h2 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand h2 span {
+            color: #25c4ff;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            max-width: 400px;
+            color: #94a9bd;
+        }
+
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #94a9bd;
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 9px;
+            transition: 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #25c4ff;
+        }
+
+        .copyright {
+            max-width: 1200px;
+            margin: 35px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: #71879c;
+            font-size: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .about-grid,
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                height: auto;
+                padding: 18px 5%;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-content h1 {
+                font-size: 38px;
+            }
+
+            .section {
+                padding: 55px 0;
+            }
+
+            .feature-grid,
+            .steps,
+            .mission-boxes,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                height: 320px;
+            }
+
+            .about-text h2,
+            .mission h2 {
+                font-size: 29px;
+            }
+
+            .cta h2 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="{{ url_for('dashboard') }}" class="logo">
+        AI <span>SmartTrip</span>
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a href="{{ url_for('about') }}">
+            About Us
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+        <a href="{{ url_for('my_requirements') }}">
+            My Requests
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="small-title">
+            Discover • Plan • Travel
+        </div>
+
+        <h1>
+            About AI SmartTrip
+        </h1>
+
+        <p>
+            A smart travel planning platform designed to make
+            discovering destinations, exploring packages and
+            planning personalized journeys easier.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="about-grid">
+
+            <div class="about-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=85"
+                    alt="Travel Planning"
+                >
+
+            </div>
+
+
+            <div class="about-text">
+
+                <h2>
+                    Travel Planning,
+                    <span>Made Smarter.</span>
+                </h2>
+
+                <p>
+                    AI SmartTrip is a modern travel planning system
+                    created to help travellers discover suitable
+                    destinations and travel packages according to
+                    their requirements.
+                </p>
+
+                <p>
+                    Instead of searching through multiple travel
+                    websites and manually comparing different
+                    options, users can explore packages, search
+                    destinations and submit their own customized
+                    travel requirements from one platform.
+                </p>
+
+                <p>
+                    The platform combines a simple user experience
+                    with smart travel planning concepts to provide
+                    a more organized and convenient journey planning
+                    experience.
+                </p>
+
+                <div class="about-points">
+
+                    <div class="point">
+                        <div class="point-icon">✓</div>
+                        Personalized Travel Planning
+                    </div>
+
+                    <div class="point">
+                        <div class="point-icon">✓</div>
+                        Multiple Domestic & International Packages
+                    </div>
+
+                    <div class="point">
+                        <div class="point-icon">✓</div>
+                        Custom Travel Requirements
+                    </div>
+
+                    <div class="point">
+                        <div class="point-icon">✓</div>
+                        Customer Inquiry & Request Tracking
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="section features-section">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <div class="tag">
+                Platform Features
+            </div>
+
+            <h2>
+                Everything You Need for a Better Trip
+            </h2>
+
+            <p>
+                AI SmartTrip brings important travel planning
+                functions together in one convenient platform.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🌍
+                </div>
+
+                <h3>
+                    Destination Discovery
+                </h3>
+
+                <p>
+                    Explore popular destinations and discover
+                    travel opportunities according to your interests.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🧳
+                </div>
+
+                <h3>
+                    Travel Packages
+                </h3>
+
+                <p>
+                    Browse curated domestic and international
+                    travel packages with duration, pricing and
+                    important trip details.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    Smart Trip Planning
+                </h3>
+
+                <p>
+                    Generate travel plans based on destination,
+                    duration, budget, interests and traveller needs.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📝
+                </div>
+
+                <h3>
+                    Custom Requirements
+                </h3>
+
+                <p>
+                    Customers can submit personalized requirements
+                    when an existing package does not match their
+                    travel needs.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📩
+                </div>
+
+                <h3>
+                    Customer Inquiries
+                </h3>
+
+                <p>
+                    Users can contact the travel team and request
+                    additional information about destinations and
+                    packages.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Request Tracking
+                </h3>
+
+                <p>
+                    Travel requirements and customer requests can
+                    be tracked through their respective status.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MISSION ================= -->
+
+<section class="section mission">
+
+    <div class="container">
+
+        <div class="mission-grid">
+
+            <div>
+
+                <h2>
+                    Our <span>Mission</span>
+                </h2>
+
+                <p>
+                    Our goal is to simplify the travel planning
+                    process by providing users with a single platform
+                    where they can discover destinations, compare
+                    packages and communicate their travel requirements.
+                </p>
+
+                <p>
+                    AI SmartTrip is designed as a scalable project
+                    that can be extended in the future with advanced
+                    artificial intelligence, live travel data,
+                    booking integrations and personalized recommendations.
+                </p>
+
+            </div>
+
+
+            <div class="mission-boxes">
+
+                <div class="mission-box">
+
+                    <h3>01</h3>
+
+                    <p>
+                        Simple and user-friendly travel planning.
+                    </p>
+
+                </div>
+
+
+                <div class="mission-box">
+
+                    <h3>02</h3>
+
+                    <p>
+                        Personalized travel requirements.
+                    </p>
+
+                </div>
+
+
+                <div class="mission-box">
+
+                    <h3>03</h3>
+
+                    <p>
+                        Organized customer request management.
+                    </p>
+
+                </div>
+
+
+                <div class="mission-box">
+
+                    <h3>04</h3>
+
+                    <p>
+                        Future-ready travel technology.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <div class="tag">
+                How It Works
+            </div>
+
+            <h2>
+                Plan Your Journey in Simple Steps
+            </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <h3>
+                    Explore
+                </h3>
+
+                <p>
+                    Browse destinations and available travel packages.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <h3>
+                    Choose
+                </h3>
+
+                <p>
+                    Select a package or customize your own travel requirement.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <h3>
+                    Submit
+                </h3>
+
+                <p>
+                    Send your travel preferences and requirements.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    4
+                </div>
+
+                <h3>
+                    Travel
+                </h3>
+
+                <p>
+                    Get your trip planned and enjoy your journey.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+    <h2>
+        Ready to Plan Your Next Journey?
+    </h2>
+
+    <p>
+        Explore our travel packages or tell us what kind
+        of trip you are looking for.
+    </p>
+
+    <a href="{{ url_for('packages') }}" class="cta-btn">
+        Explore Travel Packages
+    </a>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div class="footer-brand">
+
+            <h2>
+                AI <span>SmartTrip</span>
+            </h2>
+
+            <p>
+                A smart travel planning platform designed to
+                make destination discovery, package exploration
+                and personalized trip planning easier.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('packages') }}">
+                Travel Packages
+            </a>
+
+            <a href="{{ url_for('about') }}">
+                About Us
+            </a>
+
+            <a href="{{ url_for('contact') }}">
+                Contact
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Travel
+            </h3>
+
+            <a href="{{ url_for('packages') }}">
+                Domestic Trips
+            </a>
+
+            <a href="{{ url_for('packages') }}">
+                International Trips
+            </a>
+
+            <a href="{{ url_for('new_requirement') }}">
+                Custom Trip
+            </a>
+
+            <a href="{{ url_for('my_requirements') }}">
+                My Requests
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 AI SmartTrip. All Rights Reserved.
+
+    </div>
+
+</footer>
+
+</body>
+</html>

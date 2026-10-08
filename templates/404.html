@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Page Not Found | AI SmartTrip</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(7, 18, 35, 0.82),
+                    rgba(7, 18, 35, 0.92)
+                ),
+                url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2000&q=85");
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            padding: 25px;
+        }
+
+        .error-card {
+            width: 100%;
+            max-width: 650px;
+
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.10);
+
+            border: 1px solid rgba(255, 255, 255, 0.20);
+
+            backdrop-filter: blur(14px);
+
+            border-radius: 24px;
+
+            padding: 55px 35px;
+
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .error-code {
+            font-size: 110px;
+            font-weight: 900;
+            line-height: 1;
+
+            color: #20bfff;
+
+            letter-spacing: 5px;
+
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #dbeafe;
+            font-size: 17px;
+            line-height: 1.7;
+
+            max-width: 520px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+
+            padding: 13px 28px;
+
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #16b9ff,
+                #087de8
+            );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 174, 255, 0.35);
+        }
+
+        .brand {
+            margin-top: 30px;
+
+            font-size: 15px;
+
+            color: #b9d7ed;
+        }
+
+        .brand strong {
+            color: #20bfff;
+        }
+
+        @media (max-width: 600px) {
+
+            .error-card {
+                padding: 45px 22px;
+            }
+
+            .error-code {
+                font-size: 80px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="error-card">
+
+        <div class="error-code">
+            404
+        </div>
+
+        <h1>
+            Oops! Page Not Found
+        </h1>
+
+        <p>
+            The page you're looking for doesn't exist,
+            may have been moved, or the URL may be incorrect.
+            Don't worry — let's get you back to your journey.
+        </p>
+
+        <a href="{{ url_for('dashboard') }}"
+           class="btn">
+            Back to Dashboard
+        </a>
+
+        <div class="brand">
+            Explore. Plan. Travel with
+            <strong>AI SmartTrip</strong>
+        </div>
+
+    </div>
+
+</body>
+</html>

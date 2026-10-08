@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explore Packages - AI SmartTrip</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5faf8;
+            color: #173d49;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .smart-nav {
+            background: #fff;
+            border-bottom: 1px solid #e5efeb;
+            box-shadow: 0 3px 15px rgba(20,70,60,.04);
+        }
+
+        .nav-inner {
+            width: min(1200px, 92%);
+            min-height: 70px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            color: #173d49;
+            font-size: 21px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand span {
+            color: #16a879;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #587076;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .nav-links a:hover {
+            color: #16a879;
+        }
+
+        .nav-links .logout-link {
+            color: #d95353;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ===================================================== */
+
+        .packages-page {
+            width: min(1200px, 92%);
+            margin: auto;
+            padding: 35px 0 80px;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .packages-hero {
+            background: linear-gradient(120deg, #0d2b3e, #17624f);
+            color: white;
+            border-radius: 25px;
+            padding: 45px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .packages-hero::after {
+            content: "✈";
+            position: absolute;
+            right: 30px;
+            bottom: -65px;
+            font-size: 250px;
+            opacity: .07;
+            transform: rotate(-15deg);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,.12);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .packages-hero h1 {
+            margin: 0 0 12px;
+            font-size: 42px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .packages-hero p {
+            max-width: 700px;
+            color: #d8e7e3;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* =====================================================
+           SEARCH BOX
+        ===================================================== */
+
+        .search-section {
+            background: white;
+            border: 1px solid #e0ece8;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(20,70,60,.05);
+        }
+
+        .search-title {
+            margin: 0 0 10px;
+            color: #173d49;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .search-input-wrap {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #78908d;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #d8e7e2;
+            border-radius: 12px;
+            padding: 0 16px 0 45px;
+            font-size: 14px;
+            outline: none;
+            color: #173d49;
+            background: #fbfdfc;
+        }
+
+        .search-input:focus {
+            border-color: #16a879;
+            box-shadow: 0 0 0 3px rgba(22,168,121,.10);
+            background: white;
+        }
+
+        .search-input::placeholder {
+            color: #91a2a3;
+        }
+
+        .search-btn {
+            height: 48px;
+            padding: 0 22px;
+            border: none;
+            border-radius: 12px;
+            background: #16a879;
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .search-btn:hover {
+            background: #128d67;
+            transform: translateY(-1px);
+        }
+
+        .clear-search {
+            height: 48px;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d8e7e2;
+            border-radius: 12px;
+            background: white;
+            color: #587076;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .clear-search:hover {
+            border-color: #16a879;
+            color: #16a879;
+        }
+
+
+        /* =====================================================
+           FILTERS
+        ===================================================== */
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .filter-btn {
+            text-decoration: none;
+            padding: 10px 17px;
+            border-radius: 25px;
+            background: white;
+            color: #284b4a;
+            border: 1px solid #dceae5;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #16a879;
+            color: white;
+            border-color: #16a879;
+        }
+
+
+        /* =====================================================
+           SEARCH RESULT INFO
+        ===================================================== */
+
+        .search-result {
+            margin: -10px 0 22px;
+            color: #6f8182;
+            font-size: 13px;
+        }
+
+        .search-result strong {
+            color: #173d49;
+        }
+
+
+        /* =====================================================
+           PACKAGE GRID
+        ===================================================== */
+
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+            gap: 22px;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            border: 1px solid #e5efeb;
+            box-shadow: 0 10px 30px rgba(20,70,60,.07);
+            transition: .25s;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 38px rgba(20,70,60,.12);
+        }
+
+        .package-image {
+            height: 190px;
+            position: relative;
+            overflow: hidden;
+            background: #e6f0ec;
+        }
+
+        .package-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .package-category {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(255,255,255,.94);
+            color: #17624f;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .package-content {
+            padding: 22px;
+        }
+
+        .package-content h3 {
+            margin: 0 0 8px;
+            color: #173b45;
+            font-size: 18px;
+        }
+
+        .destination {
+            color: #72858d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .package-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .meta-item {
+            background: #f1f7f5;
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 12px;
+            color: #41615b;
+        }
+
+        .package-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price {
+            color: #12966b;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .price small {
+            display: block;
+            color: #899a9c;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 7px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 9px 12px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .btn-outline {
+            border: 1px solid #16a879;
+            color: #16a879;
+        }
+
+        .btn-primary {
+            background: #16a879;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: .85;
+        }
+
+
+        /* =====================================================
+           CUSTOM TRIP CARD
+        ===================================================== */
+
+        .custom-card {
+            margin-top: 30px;
+            background: linear-gradient(120deg, #fff, #effaf6);
+            border: 2px dashed #9dd9c3;
+            border-radius: 25px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .custom-card h2 {
+            margin: 0 0 8px;
+            color: #163d48;
+        }
+
+        .custom-card p {
+            color: #6c8184;
+            margin: 0;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .custom-btn {
+            white-space: nowrap;
+            background: #123f50;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            color: #718387;
+        }
+
+        .empty h2 {
+            color: #173d49;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width: 800px) {
+
+            .nav-inner {
+                padding: 14px 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .packages-hero {
+                padding: 30px;
+            }
+
+            .packages-hero h1 {
+                font-size: 32px;
+            }
+
+            .custom-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-btn,
+            .clear-search {
+                width: 100%;
+            }
+        }
+
+
+        @media(max-width: 520px) {
+
+            .package-bottom {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .button-group {
+                width: 100%;
+            }
+
+            .button-group .btn {
+                flex: 1;
+            }
+
+            .packages-hero h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="smart-nav">
+
+    <div class="nav-inner">
+
+        <a href="{{ url_for('dashboard') }}"
+           class="brand">
+
+            ✈️ AI <span>SmartTrip</span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('packages') }}">
+                Packages
+            </a>
+
+            <a href="{{ url_for('create_trip') }}">
+                AI Trip Planner
+            </a>
+
+            <a href="{{ url_for('my_requirements') }}">
+                Requirements
+            </a>
+
+            <a href="{{ url_for('favourites') }}">
+                Favourites
+            </a>
+
+            <a href="{{ url_for('logout') }}"
+               class="logout-link">
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="packages-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="packages-hero">
+
+        <span class="hero-badge">
+            🌍 Smart Travel Collection
+        </span>
+
+        <h1>
+            Explore Your Next Journey
+        </h1>
+
+        <p>
+            Choose from our ready-made travel packages or create a completely
+            personalized trip for any destination in India or around the world.
+        </p>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SEARCH
+    ====================================================== -->
+
+    <section class="search-section">
+
+        <h3 class="search-title">
+            🔎 Find Your Perfect Destination
+        </h3>
+
+
+        <form
+            method="GET"
+            action="{{ url_for('packages') }}"
+            class="search-form"
+        >
+
+            {% if selected_category %}
+
+                <input
+                    type="hidden"
+                    name="category"
+                    value="{{ selected_category }}"
+                >
+
+            {% endif %}
+
+
+            <div class="search-input-wrap">
+
+                <span class="search-icon">
+                    <i class="bi bi-search"></i>
+                </span>
+
+                <input
+                    type="text"
+                    name="q"
+                    class="search-input"
+                    value="{{ search_query or '' }}"
+                    placeholder="Search destination or package... e.g. Goa, Dubai, Kashmir"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="search-btn"
+            >
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+
+
+            {% if search_query %}
+
+                <a
+                    href="{{ url_for('packages') }}"
+                    class="clear-search"
+                >
+                    Clear
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CATEGORY FILTERS
+    ====================================================== -->
+
+    <div class="filter-row">
+
+        <a
+            href="{{ url_for('packages') }}"
+            class="filter-btn {% if not selected_category %}active{% endif %}"
+        >
+            All Packages
+        </a>
+
+
+        {% for category in categories %}
+
+            <a
+                href="{{ url_for('packages', category=category) }}"
+                class="filter-btn {% if selected_category == category %}active{% endif %}"
+            >
+                {{ category }}
+            </a>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SEARCH RESULT MESSAGE
+    ====================================================== -->
+
+    {% if search_query %}
+
+        <div class="search-result">
+
+            Showing results for:
+            <strong>"{{ search_query }}"</strong>
+
+            {% if packages %}
+
+                — {{ packages|length }} package(s) found.
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         PACKAGES
+    ====================================================== -->
+
+    {% if packages %}
+
+        <div class="package-grid">
+
+
+            {% for package in packages %}
+
+                <article class="package-card">
+
+
+                    <!-- PACKAGE IMAGE -->
+
+                    <div class="package-image">
+
+
+                        {% if package.destination|lower == 'goa' %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80"
+                                alt="Goa"
+                            >
+
+
+                        {% elif package.destination|lower == 'kashmir' %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=80"
+                                alt="Kashmir"
+                            >
+
+
+                        {% elif package.destination|lower == 'manali' %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=80"
+                                alt="Manali"
+                            >
+
+
+                        {% elif package.destination|lower == 'dubai' %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80"
+                                alt="Dubai"
+                            >
+
+
+                        {% elif package.destination|lower == 'kerala' %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80"
+                                alt="Kerala"
+                            >
+
+
+                        {% elif package.destination|lower == 'rajasthan' %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=900&q=80"
+                                alt="Rajasthan"
+                            >
+
+
+                        {% else %}
+
+                            <img
+                                src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=900&q=80"
+                                alt="{{ package.destination }}"
+                            >
+
+                        {% endif %}
+
+
+                        <span class="package-category">
+                            {{ package.category }}
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- PACKAGE CONTENT -->
+
+                    <div class="package-content">
+
+
+                        <h3>
+                            {{ package.name }}
+                        </h3>
+
+
+                        <div class="destination">
+                            📍 {{ package.destination }}
+                        </div>
+
+
+                        <div class="package-meta">
+
+                            <span class="meta-item">
+                                🗓 {{ package.duration }} Days
+                            </span>
+
+                            <span class="meta-item">
+                                🏨 {{ package.hotel }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="package-bottom">
+
+
+                            <div class="price">
+
+                                ₹{{ "{:,.0f}".format(package.price) }}
+
+                                <small>
+                                    starting price
+                                </small>
+
+                            </div>
+
+
+                            <div class="button-group">
+
+
+                                <a
+                                    href="{{ url_for('package_details', package_id=package.id) }}"
+                                    class="btn btn-outline"
+                                >
+                                    Details
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('customize_package', package_id=package.id) }}"
+                                    class="btn btn-primary"
+                                >
+                                    Customize
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             NO RESULTS
+        ================================================== -->
+
+        <div class="empty">
+
+            <h2>
+                No package found
+            </h2>
+
+            {% if search_query %}
+
+                <p>
+                    We couldn't find a package matching
+                    <strong>"{{ search_query }}"</strong>.
+                    Try another destination or create a custom trip.
+                </p>
+
+            {% else %}
+
+                <p>
+                    Try another category or create a custom trip.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         CUSTOM TRIP
+    ====================================================== -->
+
+    <section class="custom-card">
+
+        <div>
+
+            <h2>
+                🌎 Can't find your destination?
+            </h2>
+
+            <p>
+                No problem! Plan a trip to any destination — India or abroad.
+                Enter places like Paris, London, Switzerland, Bali, Japan,
+                Singapore or any place you want.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('create_trip') }}"
+            class="custom-btn"
+        >
+            ✨ Create Custom Trip
+        </a>
+
+    </section>
+
+
+</main>
+
+
+</body>
+</html>

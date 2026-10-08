@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Customer Inquiries - AI SmartTrip</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background: #f4f8f7;
+
+            color: #173d49;
+        }
+
+
+        .navbar {
+
+            background: white;
+
+            border-bottom:
+                1px solid #e1ece9;
+
+            padding:
+                17px 5%;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .brand {
+
+            text-decoration: none;
+
+            color: #173d49;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .brand span {
+            color: #16a879;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #587076;
+
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+
+        .container {
+
+            width:
+                min(1250px, 94%);
+
+            margin:
+                35px auto 70px;
+        }
+
+
+        .header {
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #103b4c,
+                    #176c57
+                );
+
+            color: white;
+
+            border-radius: 23px;
+
+            padding: 30px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .header h1 {
+
+            margin: 0 0 7px;
+
+            font-size: 29px;
+        }
+
+
+        .header p {
+
+            margin: 0;
+
+            color: #d5e8e3;
+
+            font-size: 13px;
+        }
+
+
+        .filters {
+
+            background: white;
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid #e0ece9;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .filters input,
+        .filters select {
+
+            padding:
+                10px 12px;
+
+            border:
+                1px solid #dce9e5;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-family: inherit;
+        }
+
+
+        .filters input {
+
+            flex: 1;
+
+            min-width: 220px;
+        }
+
+
+        .filters button {
+
+            border: 0;
+
+            background: #16a879;
+
+            color: white;
+
+            padding:
+                10px 18px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .table-card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            overflow-x: auto;
+
+            border:
+                1px solid #e0ece9;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+
+        th {
+
+            background: #f1f8f5;
+
+            color: #426269;
+
+            font-size: 11px;
+
+            text-align: left;
+
+            padding: 14px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+        }
+
+
+        td {
+
+            padding: 15px 14px;
+
+            border-top:
+                1px solid #edf2f0;
+
+            font-size: 12px;
+
+            color: #526d73;
+
+            vertical-align: top;
+        }
+
+
+        .customer-name {
+
+            font-weight: 750;
+
+            color: #244b54;
+        }
+
+
+        .package {
+
+            color: #16815f;
+
+            font-weight: 650;
+        }
+
+
+        .message {
+
+            max-width: 280px;
+
+            line-height: 1.5;
+        }
+
+
+        .status-form {
+
+            display: flex;
+
+            gap: 5px;
+        }
+
+
+        .status-form select {
+
+            padding: 7px;
+
+            border:
+                1px solid #dbe8e4;
+
+            border-radius: 7px;
+
+            font-size: 11px;
+        }
+
+
+        .status-form button {
+
+            border: 0;
+
+            background: #173f50;
+
+            color: white;
+
+            padding:
+                7px 9px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+
+        .status {
+
+            display: inline-block;
+
+            padding:
+                5px 9px;
+
+            border-radius: 20px;
+
+            background: #e9f7f2;
+
+            color: #16825f;
+
+            font-weight: 700;
+
+            font-size: 10px;
+        }
+
+
+        .view {
+
+            display: inline-block;
+
+            margin-top: 7px;
+
+            text-decoration: none;
+
+            color: #167b5d;
+
+            font-weight: 700;
+
+            font-size: 11px;
+        }
+
+
+        .empty {
+
+            padding: 50px;
+
+            text-align: center;
+
+            color: #819195;
+        }
+
+
+        @media(max-width:700px) {
+
+            .navbar {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="{{ url_for('admin_dashboard') }}"
+        class="brand"
+    >
+        ✈️ AI <span>SmartTrip</span>
+    </a>
+
+
+    <nav class="nav-links">
+
+        <a href="{{ url_for('admin_dashboard') }}">
+            Admin Dashboard
+        </a>
+
+        <a href="{{ url_for('admin_customers') }}">
+            Customers
+        </a>
+
+        <a href="{{ url_for('admin_requirements') }}">
+            Requirements
+        </a>
+
+        <a href="{{ url_for('admin_search_history') }}">
+            Search History
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+
+    <section class="header">
+
+        <h1>
+            Customer Inquiries
+        </h1>
+
+        <p>
+            Manage customer questions, package inquiries
+            and travel support requests.
+        </p>
+
+    </section>
+
+
+    <form
+        method="GET"
+        action="{{ url_for('admin_inquiries') }}"
+        class="filters"
+    >
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search name, email, phone or message..."
+        >
+
+
+        <select name="status">
+
+            <option value="">
+                All Status
+            </option>
+
+            <option
+                value="New"
+                {% if status == "New" %}selected{% endif %}
+            >
+                New
+            </option>
+
+            <option
+                value="Read"
+                {% if status == "Read" %}selected{% endif %}
+            >
+                Read
+            </option>
+
+            <option
+                value="Contacted"
+                {% if status == "Contacted" %}selected{% endif %}
+            >
+                Contacted
+            </option>
+
+            <option
+                value="Resolved"
+                {% if status == "Resolved" %}selected{% endif %}
+            >
+                Resolved
+            </option>
+
+            <option
+                value="Closed"
+                {% if status == "Closed" %}selected{% endif %}
+            >
+                Closed
+            </option>
+
+        </select>
+
+
+        <button type="submit">
+            Filter
+        </button>
+
+    </form>
+
+
+    <div class="table-card">
+
+
+        {% if inquiries %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Customer
+                    </th>
+
+                    <th>
+                        Contact
+                    </th>
+
+                    <th>
+                        Package
+                    </th>
+
+                    <th>
+                        Subject
+                    </th>
+
+                    <th>
+                        Message
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for inquiry in inquiries %}
+
+                <tr>
+
+
+                    <td>
+
+                        <div class="customer-name">
+                            {{ inquiry.name }}
+                        </div>
+
+                        <small>
+                            {{ inquiry.created_at.strftime(
+                                "%d %b %Y, %I:%M %p"
+                            ) if inquiry.created_at else "" }}
+                        </small>
+
+                    </td>
+
+
+                    <td>
+
+                        {{ inquiry.email }}
+
+                        {% if inquiry.phone %}
+
+                            <br>
+                            {{ inquiry.phone }}
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if inquiry.package %}
+
+                            <span class="package">
+                                {{ inquiry.package.name }}
+                            </span>
+
+                            <br>
+
+                            {{ inquiry.package.destination }}
+
+                        {% else %}
+
+                            Custom / General
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+                        {{ inquiry.subject or "General Inquiry" }}
+                    </td>
+
+
+                    <td>
+
+                        <div class="message">
+
+                            {{ inquiry.message[:140] }}
+
+                            {% if inquiry.message|length > 140 %}
+                                ...
+                            {% endif %}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="status">
+                            {{ inquiry.status }}
+                        </span>
+
+
+                        <form
+                            method="POST"
+                            action="{{
+                                url_for(
+                                    'admin_update_inquiry_status',
+                                    inquiry_id=inquiry.id
+                                )
+                            }}"
+                            class="status-form"
+                            style="margin-top:8px;"
+                        >
+
+                            <select name="status">
+
+                                <option
+                                    value="New"
+                                    {% if inquiry.status == "New" %}selected{% endif %}
+                                >
+                                    New
+                                </option>
+
+                                <option
+                                    value="Read"
+                                    {% if inquiry.status == "Read" %}selected{% endif %}
+                                >
+                                    Read
+                                </option>
+
+                                <option
+                                    value="Contacted"
+                                    {% if inquiry.status == "Contacted" %}selected{% endif %}
+                                >
+                                    Contacted
+                                </option>
+
+                                <option
+                                    value="Resolved"
+                                    {% if inquiry.status == "Resolved" %}selected{% endif %}
+                                >
+                                    Resolved
+                                </option>
+
+                                <option
+                                    value="Closed"
+                                    {% if inquiry.status == "Closed" %}selected{% endif %}
+                                >
+                                    Closed
+                                </option>
+
+                            </select>
+
+
+                            <button type="submit">
+                                Save
+                            </button>
+
+                        </form>
+
+                    </td>
+
+
+                    <td>
+
+                        <a
+                            href="{{
+                                url_for(
+                                    'admin_inquiry_detail',
+                                    inquiry_id=inquiry.id
+                                )
+                            }}"
+                            class="view"
+                        >
+                            View Details →
+                        </a>
+
+                    </td>
+
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>
+                    No inquiries found
+                </h2>
+
+                <p>
+                    Customer inquiries will appear here
+                    when customers contact AI SmartTrip.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</main>
+
+
+</body>
+
+</html>

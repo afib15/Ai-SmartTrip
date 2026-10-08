@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Inquiry Submitted - AI SmartTrip</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eaf8f3,
+                    #f8fbfa
+                );
+        }
+
+
+        .card {
+
+            width:
+                min(500px, 90%);
+
+            background: white;
+
+            border-radius: 28px;
+
+            padding: 45px 35px;
+
+            text-align: center;
+
+            box-shadow:
+                0 20px 60px
+                rgba(20, 70, 65, .12);
+
+            border:
+                1px solid #e1eee9;
+        }
+
+
+        .icon {
+
+            width: 80px;
+
+            height: 80px;
+
+            margin:
+                0 auto 22px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e5f8f0;
+
+            color: #16a879;
+
+            font-size: 40px;
+        }
+
+
+        h1 {
+
+            margin:
+                0 0 12px;
+
+            color: #173d49;
+
+            font-size: 28px;
+        }
+
+
+        p {
+
+            color: #708488;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+            margin:
+                0 auto 25px;
+        }
+
+
+        .buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+        }
+
+
+        a {
+
+            text-decoration: none;
+
+            padding:
+                12px 18px;
+
+            border-radius: 11px;
+
+            font-size: 13px;
+
+            font-weight: 750;
+        }
+
+
+        .primary {
+
+            background: #16a879;
+
+            color: white;
+        }
+
+
+        .secondary {
+
+            background: #edf8f5;
+
+            color: #167052;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+
+    <div class="icon">
+        ✓
+    </div>
+
+
+    <h1>
+        Inquiry Submitted!
+    </h1>
+
+
+    <p>
+        Thank you for contacting AI SmartTrip.
+        Your inquiry has been recorded successfully.
+        Our travel team will review your request
+        and contact you soon.
+    </p>
+
+
+    <div class="buttons">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="primary"
+        >
+            Back to Dashboard
+        </a>
+
+
+        <a
+            href="{{ url_for('my_requirements') }}"
+            class="secondary"
+        >
+            My Requirements
+        </a>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

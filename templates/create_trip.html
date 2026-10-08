@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plan Your Trip - AI SmartTrip</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        body {
+            background: #f6fbf9;
+        }
+
+        .planning-wrapper {
+            width: min(1100px, 92%);
+            margin: auto;
+            padding: 40px 0 70px;
+        }
+
+        .planning-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .planning-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            background: #e8f8f2;
+            color: #0d8b63;
+
+            padding: 9px 16px;
+
+            border-radius: 30px;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            margin-bottom: 15px;
+        }
+
+        .planning-header h1 {
+            color: #102a43;
+            font-size: 42px;
+            margin: 0 0 10px;
+        }
+
+        .planning-header h1 span {
+            color: #16a879;
+        }
+
+        .planning-header p {
+            color: #829ab1;
+            font-size: 16px;
+        }
+
+        .planning-layout {
+            display: grid;
+            grid-template-columns: 0.75fr 1.25fr;
+            gap: 25px;
+            align-items: stretch;
+        }
+
+        .planning-info {
+            background:
+                linear-gradient(
+                    145deg,
+                    #102a43,
+                    #17435d
+                );
+
+            color: white;
+
+            border-radius: 30px;
+
+            padding: 35px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .planning-info::after {
+            content: "✈";
+
+            position: absolute;
+
+            right: -20px;
+            bottom: -50px;
+
+            font-size: 230px;
+
+            opacity: 0.05;
+
+            transform: rotate(-20deg);
+        }
+
+        .planning-info h2 {
+            margin-top: 0;
+            font-size: 29px;
+        }
+
+        .planning-info > p {
+            color: #c9d7e1;
+            line-height: 1.7;
+        }
+
+        .benefit {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin: 25px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefit-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 13px;
+
+            background: rgba(22,168,121,0.18);
+
+            color: #55d5a8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+        .benefit strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .benefit small {
+            color: #afc1ce;
+            line-height: 1.5;
+        }
+
+        .planning-form-card {
+            background: white;
+
+            border-radius: 30px;
+
+            padding: 35px;
+
+            border: 1px solid #edf4f1;
+
+            box-shadow:
+                0 15px 45px rgba(16,42,67,0.08);
+        }
+
+        .form-heading {
+            margin-bottom: 25px;
+        }
+
+        .form-heading h2 {
+            margin: 0 0 7px;
+            color: #102a43;
+        }
+
+        .form-heading p {
+            margin: 0;
+            color: #829ab1;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .field-icon {
+            position: relative;
+        }
+
+        .field-icon i {
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #16a879;
+        }
+
+        .field-icon input,
+        .field-icon select {
+            padding-left: 44px;
+        }
+
+        .smart-input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border-radius: 13px;
+
+            border: 1px solid #d9e8e1;
+
+            outline: none;
+
+            color: #334e68;
+
+            background: #fff;
+
+            transition: 0.2s;
+
+            font-size: 14px;
+        }
+
+        .smart-input:focus {
+            border-color: #16a879;
+
+            box-shadow:
+                0 0 0 4px rgba(22,168,121,0.10);
+        }
+
+        .smart-label {
+            display: block;
+
+            color: #102a43;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        textarea.smart-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9px;
+        }
+
+        .interest-option {
+            position: relative;
+        }
+
+        .interest-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .interest-option label {
+            display: block;
+
+            padding: 10px 8px;
+
+            text-align: center;
+
+            border: 1px solid #d9e8e1;
+
+            border-radius: 11px;
+
+            color: #526d82;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .interest-option input:checked + label {
+            background: #e8f8f2;
+
+            border-color: #16a879;
+
+            color: #0d8b63;
+
+            font-weight: 700;
+        }
+
+        .smart-submit {
+            width: 100%;
+
+            border: none;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #16a879,
+                    #27bd8a
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px rgba(22,168,121,0.22);
+
+            transition: 0.2s;
+        }
+
+        .smart-submit:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 14px 30px rgba(22,168,121,0.28);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #829ab1;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+        .back-link:hover {
+            color: #16a879;
+        }
+
+        .ai-note {
+            margin-top: 18px;
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            background: #f4faf7;
+
+            color: #526d82;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        @media (max-width: 850px) {
+
+            .planning-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .planning-info {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .planning-header h1 {
+                font-size: 34px;
+            }
+
+            .planning-form-card,
+            .planning-info {
+                padding: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .interests-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="smart-navbar">
+
+    <div class="navbar-inner">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="brand"
+        >
+
+            <div class="brand-icon">
+                ✈️
+            </div>
+
+            AI <span>SmartTrip</span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('create_trip') }}">
+                Plan Trip
+            </a>
+
+            <a href="{{ url_for('favourites') }}">
+                Favourites
+            </a>
+
+            <a href="{{ url_for('assistant') }}">
+                AI Assistant
+            </a>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="btn-smart btn-outline-smart"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="btn-smart btn-primary-smart"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN -->
+
+<main class="planning-wrapper">
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="back-link"
+    >
+        <i class="bi bi-arrow-left"></i>
+        Back to Dashboard
+    </a>
+
+
+    <!-- HEADER -->
+
+    <div class="planning-header">
+
+        <div class="planning-badge">
+
+            <i class="bi bi-stars"></i>
+
+            AI POWERED TRIP PLANNER
+
+        </div>
+
+
+        <h1>
+            Plan Your
+            <span>Dream Trip</span>
+        </h1>
+
+
+        <p>
+            Tell us a little about your journey and let
+            SmartTrip build your personalized travel plan.
+        </p>
+
+    </div>
+
+
+
+    <!-- LAYOUT -->
+
+    <div class="planning-layout">
+
+
+        <!-- LEFT INFO -->
+
+        <section class="planning-info">
+
+            <h2>
+                Your journey,
+                intelligently planned.
+            </h2>
+
+
+            <p>
+                AI SmartTrip understands your destination,
+                budget, travel duration and interests to
+                create a personalized travel experience.
+            </p>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        AI Personalized Itinerary
+                    </strong>
+
+                    <small>
+                        Get a day-wise travel plan based
+                        on your preferences.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        Smart Budget Planning
+                    </strong>
+
+                    <small>
+                        Plan your trip while keeping
+                        your budget under control.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="bi bi-heart"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        Personalized Experiences
+                    </strong>
+
+                    <small>
+                        Choose the activities and experiences
+                        you actually enjoy.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="bi bi-lightning-charge"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        Fast Planning
+                    </strong>
+
+                    <small>
+                        Turn your travel idea into a structured
+                        itinerary in seconds.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FORM -->
+
+        <section class="planning-form-card">
+
+
+            <div class="form-heading">
+
+                <h2>
+                    Trip Details
+                </h2>
+
+                <p>
+                    Enter your preferences below.
+                </p>
+
+            </div>
+
+
+            <!-- IMPORTANT:
+                 Keep action pointing to existing backend route.
+            -->
+
+            <form
+                method="POST"
+                action="{{ url_for('create_trip') }}"
+            >
+
+
+                <!-- DESTINATION -->
+
+                <div class="form-group">
+
+                    <label class="smart-label">
+                        Destination
+                    </label>
+
+                    <div class="field-icon">
+
+                        <i class="bi bi-geo-alt-fill"></i>
+
+                        <input
+                            type="text"
+                            name="destination"
+                            class="smart-input"
+                            placeholder="e.g. Goa, Kashmir, Dubai"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DURATION + TRAVELLERS -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label class="smart-label">
+                            Trip Duration
+                        </label>
+
+                        <div class="field-icon">
+
+                            <i class="bi bi-calendar3"></i>
+
+                            <input
+                                type="number"
+                                name="duration"
+                                class="smart-input"
+                                placeholder="Number of days"
+                                min="1"
+                                max="60"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="smart-label">
+                            Travellers
+                        </label>
+
+                        <div class="field-icon">
+
+                            <i class="bi bi-people-fill"></i>
+
+                            <input
+                                type="number"
+                                name="travellers"
+                                class="smart-input"
+                                placeholder="Number of people"
+                                min="1"
+                                max="50"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BUDGET -->
+
+                <div class="form-group">
+
+                    <label class="smart-label">
+                        Total Budget
+                    </label>
+
+                    <div class="field-icon">
+
+                        <i class="bi bi-currency-rupee"></i>
+
+                        <input
+                            type="number"
+                            name="budget"
+                            class="smart-input"
+                            placeholder="e.g. 25000"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- INTERESTS -->
+
+                <div class="form-group">
+
+                    <label class="smart-label">
+                        What are you interested in?
+                    </label>
+
+
+                    <div class="interests-grid">
+
+
+                        <div class="interest-option">
+
+                            <input
+                                type="checkbox"
+                                id="sightseeing"
+                                name="interests"
+                                value="Sightseeing"
+                            >
+
+                            <label for="sightseeing">
+                                🏛️ Sightseeing
+                            </label>
+
+                        </div>
+
+
+                        <div class="interest-option">
+
+                            <input
+                                type="checkbox"
+                                id="food"
+                                name="interests"
+                                value="Food"
+                            >
+
+                            <label for="food">
+                                🍜 Food
+                            </label>
+
+                        </div>
+
+
+                        <div class="interest-option">
+
+                            <input
+                                type="checkbox"
+                                id="adventure"
+                                name="interests"
+                                value="Adventure"
+                            >
+
+                            <label for="adventure">
+                                🧗 Adventure
+                            </label>
+
+                        </div>
+
+
+                        <div class="interest-option">
+
+                            <input
+                                type="checkbox"
+                                id="nature"
+                                name="interests"
+                                value="Nature"
+                            >
+
+                            <label for="nature">
+                                🌿 Nature
+                            </label>
+
+                        </div>
+
+
+                        <div class="interest-option">
+
+                            <input
+                                type="checkbox"
+                                id="shopping"
+                                name="interests"
+                                value="Shopping"
+                            >
+
+                            <label for="shopping">
+                                🛍️ Shopping
+                            </label>
+
+                        </div>
+
+
+                        <div class="interest-option">
+
+                            <input
+                                type="checkbox"
+                                id="culture"
+                                name="interests"
+                                value="Culture"
+                            >
+
+                            <label for="culture">
+                                🎭 Culture
+                            </label>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- EXTRA NOTES -->
+
+                <div class="form-group">
+
+                    <label class="smart-label">
+                        Special Preferences
+                        <span
+                            style="
+                            color:#829ab1;
+                            font-weight:400;
+                            "
+                        >
+                            (Optional)
+                        </span>
+                    </label>
+
+                    <textarea
+                        name="preferences"
+                        class="smart-input"
+                        placeholder="Example: I prefer peaceful places, vegetarian food, less walking..."
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="smart-submit"
+                >
+
+                    <i class="bi bi-stars"></i>
+
+                    Generate My AI Trip
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </button>
+
+
+                <div class="ai-note">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Your preferences are used only to
+                    personalize your travel planning experience.
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="smart-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            ✈️ AI <span>SmartTrip</span>
+        </div>
+
+        <div class="footer-text">
+            Smart planning. Better journeys. ✨
+        </div>
+
+        <div class="footer-text">
+            TY BSc Computer Science Project
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>
